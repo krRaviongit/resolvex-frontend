@@ -24,23 +24,26 @@ const DARK = {
 };
 
 const LIGHT = {
-  bg:          "#f8f8f8",
+  bg:          "#f4f6f9",
   bgCard:      "#ffffff",
-  bgCardHover: "#f2f2f2",
+  bgCardHover: "#f8fafc",
   bgInput:     "#ffffff",
-  border:      "#e0e0e0",
-  borderHover: "#cccccc",
-  borderFocus: "#999",
-  text:        "#0a0a0a",
-  textSub:     "#555",
-  textDim:     "#999",
-  logo:        "#c49a00",
+  border:      "#e2e8f0",
+  borderHover: "#cbd5e1",
+  borderFocus: "#6366f1",
+  text:        "#0f172a",
+  textSub:     "#475569",
+  textDim:     "#94a3b8",
+  logo:        "#b45309",
   danger:      "#dc2626",
   success:     "#16a34a",
   warning:     "#d97706",
   info:        "#2563eb",
   purple:      "#7c3aed",
-  shadow:      "rgba(0,0,0,0.12)",
+  shadow:      "rgba(15,23,42,0.08)",
+  // Light-only extras
+  accent:      "#6366f1",   // indigo accent for buttons
+  accentText:  "#ffffff",
 };
 
 // C is set at runtime — see App() below
@@ -167,19 +170,26 @@ function Badge({ status, type = "status" }) {
   );
 }
 
-function Btn({ children, onClick, variant = "primary", size = "md", disabled, style = {}, type = "button" }) {
+function Btn({ children, onClick, variant = "primary", size = "md", disabled, style = {}, type = "button", isDarkTheme }) {
   const sz = { sm: { padding: "6px 13px", fontSize: 15 }, md: { padding: "9px 18px", fontSize: 16 }, lg: { padding: "12px 26px", fontSize: 17 } };
-  const v  = {
-    primary: { background: C.text, color: "#000", border: "none" },
-    ghost:   { background: "transparent", color: C.textSub, border: `1px solid ${C.border}` },
-    danger:  { background: "transparent", color: C.danger,  border: `1px solid ${C.border}` },
+  // In dark mode: primary = white bg, black text
+  // In light mode: primary = indigo/brand bg, white text
+  const isDark = C.bg === "#060606";
+  const v = {
+    primary: isDark
+      ? { background: "#ffffff", color: "#000000", border: "none" }
+      : { background: "#6366f1", color: "#ffffff",  border: "none" },
+    ghost: isDark
+      ? { background: "transparent", color: C.textSub, border: `1px solid ${C.border}` }
+      : { background: "#ffffff",     color: C.textSub, border: `1px solid ${C.border}` },
+    danger:  { background: "transparent", color: C.danger, border: `1px solid ${C.danger}44` },
     subtle:  { background: C.bgCard,      color: C.textSub, border: `1px solid ${C.border}` },
   };
   return (
     <button type={type} onClick={onClick} disabled={disabled}
-      style={{ ...sz[size], ...v[variant], borderRadius: 7, fontWeight: 500, fontFamily: "inherit", cursor: disabled ? "not-allowed" : "pointer", opacity: disabled ? 0.4 : 1, display: "inline-flex", alignItems: "center", gap: 7, transition: "opacity 0.15s, transform 0.12s", letterSpacing: 0.1, ...style }}
-      onMouseEnter={e => { if (!disabled) { e.currentTarget.style.opacity = "0.8"; e.currentTarget.style.transform = "translateY(-1px)"; } }}
-      onMouseLeave={e => { e.currentTarget.style.opacity = "1"; e.currentTarget.style.transform = "translateY(0)"; }}
+      style={{ ...sz[size], ...v[variant], borderRadius: 8, fontWeight: 600, fontFamily: "inherit", cursor: disabled ? "not-allowed" : "pointer", opacity: disabled ? 0.4 : 1, display: "inline-flex", alignItems: "center", gap: 7, transition: "all 0.15s", letterSpacing: 0.1, boxShadow: !isDark && variant === "primary" ? "0 1px 3px rgba(99,102,241,0.3)" : "none", ...style }}
+      onMouseEnter={e => { if (!disabled) { e.currentTarget.style.opacity = "0.88"; e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = !isDark && variant==="primary" ? "0 4px 12px rgba(99,102,241,0.35)" : "none"; } }}
+      onMouseLeave={e => { e.currentTarget.style.opacity = "1"; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = !isDark && variant==="primary" ? "0 1px 3px rgba(99,102,241,0.3)" : "none"; }}
     >{children}</button>
   );
 }
@@ -193,8 +203,8 @@ function Field({ label, type = "text", value, onChange, placeholder, required, o
     <div style={{ marginBottom: 15 }}>{lbl}
       {type === "select" ? (
         <select value={value} onChange={onChange} onFocus={focus} onBlur={blur} style={{ ...base, cursor: "pointer" }}>
-          <option value="" style={{ background: "#111" }}>Select…</option>
-          {options.map(o => <option key={o} value={o} style={{ background: "#111" }}>{o}</option>)}
+          <option value="" style={{ background: C.bgCard, color: C.text }}>Select…</option>
+          {options.map(o => <option key={o} value={o} style={{ background: C.bgCard, color: C.text }}>{o}</option>)}
         </select>
       ) : type === "textarea" ? (
         <textarea value={value} onChange={onChange} placeholder={placeholder} rows={rows || 4} onFocus={focus} onBlur={blur} style={{ ...base, resize: "vertical" }} />
@@ -231,7 +241,7 @@ function Toast({ message, type = "success" }) {
   if (!message) return null;
   const col = { success: C.success, error: C.danger, info: C.textSub };
   return (
-    <div style={{ position: "fixed", bottom: 28, right: 28, background: C.bgCard, color: col[type], padding: "12px 18px", borderRadius: 8, fontSize: 15, fontWeight: 500, border: `1px solid ${C.borderHover}`, zIndex: 9999, animation: "fadeUp 0.22s ease", display: "flex", alignItems: "center", gap: 8, boxShadow: "0 8px 32px rgba(0,0,0,0.8)" }}>
+    <div style={{ position: "fixed", bottom: 28, right: 28, background: C.bgCard, color: col[type], padding: "12px 18px", borderRadius: 8, fontSize: 15, fontWeight: 500, border: `1px solid ${C.borderHover}`, zIndex: 9999, animation: "fadeUp 0.22s ease", display: "flex", alignItems: "center", gap: 8, boxShadow: C.bg === "#060606" ? "0 8px 32px rgba(0,0,0,0.8)" : "0 4px 16px rgba(0,0,0,0.12)" }}>
       <Ico name={type === "success" ? "check" : "x"} size={14} color={col[type]} sw={2.2} />
       {message}
     </div>
@@ -266,7 +276,7 @@ function Navbar({ page, setPage, user, onLogout, isDark, toggleTheme }) {
   );
 
   return (
-    <nav className="rx-nav-pad" style={{ height: 64, background: C.bg, borderBottom: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 32px", position: "sticky", top: 0, zIndex: 500 }}>
+    <nav className="rx-nav-pad" style={{ height: 64, background: C.bgCard, borderBottom: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 32px", position: "sticky", top: 0, zIndex: 500, boxShadow: C.bg === "#060606" ? "none" : "0 1px 3px rgba(0,0,0,0.08)" }}>
       {/* Left side: logo + nav links — SEPARATED so clicks don't bubble */}
       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
 
@@ -357,7 +367,7 @@ function HomePage({ setPage, setSelectedDept, user }) {
   return (
     <>
       {/* SEO-friendly semantic HTML */}
-      <main className="rx-hero" style={{ maxWidth: 1100, margin: "0 auto", padding: "64px 32px 96px" }}>
+      <main className="rx-hero" style={{ maxWidth: 1100, margin: "0 auto", padding: "64px 32px 96px", minHeight: "100%" }}>
 
         {/* Hero */}
         <header style={{ marginBottom: 80 }}>
@@ -373,10 +383,20 @@ function HomePage({ setPage, setSelectedDept, user }) {
           <p style={{ fontSize: 19, color: C.textSub, maxWidth: 560, margin: "0 0 40px", lineHeight: 1.9, fontWeight: 400 }}>
           Submit complaints to the right department instantly. Track progress, get notified, and close issues fast.
           </p>
+          <p style={{ fontSize: 19, maxWidth: 560, margin: "0 0 40px", lineHeight: 1.9, fontWeight: 400 }}>
+            <span style={{ color: C.text, fontWeight: 600 }}>No more chasing people.</span>
+            <span style={{ color: C.textSub }}> Raise a complaint in 30 seconds — </span>
+            <span style={{ color: C.logo, fontWeight: 600 }}>the right team gets it instantly.</span>
+            <br />
+            <span style={{ color: C.textSub }}>Track every update, </span>
+            <span style={{ color: C.text, fontWeight: 600 }}>get notified by email,</span>
+            <span style={{ color: C.textSub }}> and close issues </span>
+            <span style={{ color: "#22c55e", fontWeight: 600 }}>faster than ever before.</span>
+          </p>
           {!user && (
             <div className="rx-hero-btns" style={{ display: "flex", gap: 12 }}>
               <Btn size="lg" variant="primary" onClick={() => setPage("register")} style={{ gap: 8 }}>
-                Get started free <Ico name="arrowRight" size={15} color="#000" />
+                Get started free <Ico name="arrowRight" size={15} color={C.bg === "#060606" ? "#000" : "#fff"} />
               </Btn>
               <Btn size="lg" variant="ghost" onClick={() => setPage("login")}>Sign in</Btn>
             </div>
@@ -384,11 +404,11 @@ function HomePage({ setPage, setSelectedDept, user }) {
         </header>
 
         {/* Stats */}
-        <section aria-label="Platform statistics" className="rx-stats" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 0, marginBottom: 140, border: `1px solid ${C.border}`, borderRadius: 10, overflow: "hidden" }}>
+        <section aria-label="Platform statistics" className="rx-stats" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 0, marginBottom: 140, border: `1px solid ${C.border}`, borderRadius: 12, overflow: "hidden", boxShadow: C.bg === "#060606" ? "none" : "0 2px 8px rgba(0,0,0,0.06)" }}>
           {[
             { v: "1,284",    l: "Complaints resolved", color: "#38bdf8" },
             { v: "2.4 days", l: "Avg resolution time",  color: "#ff617e" },
-            { v: "8",        l: "Active departments",    color: "#ffa72c" },
+            { v: "8",        l: "Active departments",    color: "#c0ff2c" },
             { v: "94%",      l: "Satisfaction rate",     color: "#4ade80" },
           ].map((s, i) => (
             <div key={s.l} style={{ padding: "26px 28px", borderRight: i < 3 ? `1px solid ${C.border}` : "none", background: C.bgCard }}>
@@ -401,24 +421,45 @@ function HomePage({ setPage, setSelectedDept, user }) {
         {/* Departments */}
         <section aria-label="Departments">
           <h2 style={{ fontSize: 14, fontWeight: 600, color: C.textSub, letterSpacing: 1.2, textTransform: "uppercase", margin: "0 0 18px" }}>Departments</h2>
-          <div className="rx-dept" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(220px,1fr))", gap: 1, border: `1px solid ${C.border}`, borderRadius: 10, overflow: "hidden" }}>
+          <div className="rx-dept" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(220px,1fr))", gap: 0, border: `1px solid ${C.border}`, borderRadius: 12, overflow: "hidden", boxShadow: C.bg === "#060606" ? "none" : "0 2px 8px rgba(0,0,0,0.06)" }}>
             {DEPARTMENTS.map((dept, i) => {
               const dColor = DEPT_COLORS[dept.id];
               return (
                 <div key={dept.id} onClick={() => { setSelectedDept(dept.id); setPage(user ? "submit" : "login"); }}
-                  style={{ padding: "22px 20px", background: C.bgCard, cursor: "pointer", transition: "background 0.12s", borderRight: i % 4 !== 3 ? `1px solid ${C.border}` : "none", borderBottom: i < 4 ? `1px solid ${C.border}` : "none", display: "flex", flexDirection: "column", gap: 14 }}
-                  onMouseEnter={e => e.currentTarget.style.background = C.bgCardHover}
-                  onMouseLeave={e => e.currentTarget.style.background = C.bgCard}>
+                  style={{ padding: "24px 22px", background: C.bgCard, cursor: "pointer", transition: "all 0.22s cubic-bezier(0.4,0,0.2,1)", borderRight: i % 4 !== 3 ? `1px solid ${C.border}` : "none", borderBottom: i < 4 ? `1px solid ${C.border}` : "none", display: "flex", flexDirection: "column", gap: 16, position: "relative", overflow: "hidden" }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.background = C.bg === "#060606" ? "#161616" : `${dColor}08`;
+                    e.currentTarget.style.transform = "translateY(-2px)";
+                    e.currentTarget.style.boxShadow = C.bg === "#060606" ? `0 8px 24px rgba(0,0,0,0.4)` : `0 8px 24px ${dColor}22`;
+                    e.currentTarget.querySelector(".dept-icon-wrap").style.background = `${dColor}25`;
+                    e.currentTarget.querySelector(".dept-icon-wrap").style.borderColor = `${dColor}55`;
+                    e.currentTarget.querySelector(".dept-arrow").style.opacity = "1";
+                    e.currentTarget.querySelector(".dept-arrow").style.transform = "translateX(4px)";
+                    e.currentTarget.querySelector(".dept-label").style.color = dColor;
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.background = C.bgCard;
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.boxShadow = "none";
+                    e.currentTarget.querySelector(".dept-icon-wrap").style.background = `${dColor}14`;
+                    e.currentTarget.querySelector(".dept-icon-wrap").style.borderColor = `${dColor}25`;
+                    e.currentTarget.querySelector(".dept-arrow").style.opacity = "0.4";
+                    e.currentTarget.querySelector(".dept-arrow").style.transform = "translateX(0)";
+                    e.currentTarget.querySelector(".dept-label").style.color = C.text;
+                  }}>
+                  {/* Subtle color glow bar at top */}
+                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${dColor}66, ${dColor}22)`, borderRadius: "0 0 0 0", opacity: 0.6 }} />
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                    {/* Colored icon in a subtle chip */}
-                    <div style={{ width: 36, height: 36, borderRadius: 8, background: `${dColor}14`, border: `1px solid ${dColor}25`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                      <Ico name={dept.icon} size={18} color={dColor} sw={1.8} />
+                    <div className="dept-icon-wrap" style={{ width: 42, height: 42, borderRadius: 10, background: `${dColor}14`, border: `1px solid ${dColor}25`, display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.2s" }}>
+                      <Ico name={dept.icon} size={20} color={dColor} sw={1.8} />
                     </div>
-                    <Ico name="arrowRight" size={14} color={C.textDim} sw={1.5} />
+                    <div className="dept-arrow" style={{ opacity: 0.4, transition: "all 0.2s" }}>
+                      <Ico name="arrowRight" size={16} color={dColor} sw={2} />
+                    </div>
                   </div>
                   <div>
-                    <div style={{ fontSize: 17, fontWeight: 600, color: C.text, marginBottom: 5 }}>{dept.label}</div>
-                    <div style={{ fontSize: 15, color: C.textSub, lineHeight: 1.5 }}>{dept.desc}</div>
+                    <div className="dept-label" style={{ fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 5, transition: "color 0.2s" }}>{dept.label}</div>
+                    <div style={{ fontSize: 13, color: C.textSub, lineHeight: 1.55 }}>{dept.desc}</div>
                   </div>
                 </div>
               );
@@ -460,7 +501,7 @@ function AuthPage({ mode, setPage, onLogin }) {
   };
 
   return (
-    <main style={{ minHeight: "calc(100vh - 60px)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
+    <main style={{ minHeight: "calc(100vh - 64px)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24, background: C.bg }}>
       <div style={{ width: "100%", maxWidth: 400 }}>
         <div style={{ marginBottom: 28, textAlign: "center" }}>
           <h1 style={{ fontSize: 28, fontWeight: 700, color: C.text, margin: "0 0 8px", letterSpacing: -0.8 }}>
@@ -780,7 +821,7 @@ function UserDashboard({ user, setPage, showToast }) {
       {/* Stats */}
       <div className="rx-user-stats" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 0, border: `1px solid ${C.border}`, borderRadius: 10, overflow: "hidden", marginBottom: 32 }}>
         {[{ l: "Total", v: stats.total }, { l: "Resolved", v: stats.resolved }, { l: "Active", v: stats.pending }].map((s, i) => (
-          <div key={s.l} style={{ padding: "20px 24px", borderRight: i < 2 ? `1px solid ${C.border}` : "none", background: C.bgCard }}>
+          <div key={s.l} style={{ padding: "20px 24px", borderRight: i < 2 ? `1px solid ${C.border}` : "none", background: C.bgCard, transition: "background 0.2s" }}>
             <div style={{ fontSize: 28, fontWeight: 700, color: C.text, letterSpacing: -0.8 }}>{s.v}</div>
             <div style={{ fontSize: 15, color: C.textSub, marginTop: 3 }}>{s.l}</div>
           </div>
@@ -948,7 +989,7 @@ function AdminDashboard({ showToast }) {
   };
 
   const openManage = (c) => { setSelected(c); setNoteInput(c.resolutionNotes || ""); setNewStatus(c.status || "New"); };
-  const selStyle   = { padding: "7px 11px", borderRadius: 6, border: `1px solid ${C.border}`, fontSize: 15, fontFamily: "inherit", background: C.bgCard, color: C.text, outline: "none", cursor: "pointer" };
+  const selStyle   = { padding: "7px 11px", borderRadius: 6, border: `1px solid ${C.border}`, fontSize: 15, fontFamily: "inherit", background: C.bgInput, color: C.text, outline: "none", cursor: "pointer", transition: "border-color 0.15s" };
 
   return (
     <main className="rx-page" style={{ maxWidth: 1100, margin: "0 auto", padding: "48px 32px" }}>
@@ -960,13 +1001,13 @@ function AdminDashboard({ showToast }) {
       {/* ── Stat Cards ── */}
       <div className="rx-admin-stats" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12, marginBottom: 28 }}>
         {[
-          { l: "Total",       v: stats.total,      color: "#fff",     bg: "#111",    border: C.border },
-          { l: "New",         v: stats.new,        color: "#60a5fa",  bg: "#0a1020", border: "#60a5fa33" },
-          { l: "In Progress", v: stats.inProgress, color: "#f59e0b",  bg: "#1a1200", border: "#f59e0b33" },
-          { l: "Resolved",    v: stats.resolved,   color: "#22c55e",  bg: "#0a1a0a", border: "#22c55e33" },
+          { l: "Total",       v: stats.total,      color: C.text,    bg: C.bgCard,  border: C.border },
+          { l: "New",         v: stats.new,        color: "#3b82f6",  bg: C.bg === "#060606" ? "#0a1020" : "#eff6ff", border: "#3b82f633" },
+          { l: "In Progress", v: stats.inProgress, color: "#f59e0b",  bg: C.bg === "#060606" ? "#1a1200" : "#fffbeb", border: "#f59e0b33" },
+          { l: "Resolved",    v: stats.resolved,   color: "#22c55e",  bg: C.bg === "#060606" ? "#0a1a0a" : "#f0fdf4", border: "#22c55e33" },
         ].map(s => (
           <div key={s.l} style={{ padding: "22px 24px", borderRadius: 10, background: s.bg, border: `1px solid ${s.border}` }}>
-            <div style={{ fontSize: 32, fontWeight: 700, color: s.color, letterSpacing: -1, lineHeight: 1 }}>{s.v}</div>
+            <div style={{ fontSize: 32, fontWeight: 700, color: s.l === 'Total' ? C.text : s.color, letterSpacing: -1, lineHeight: 1 }}>{s.v}</div>
             <div style={{ fontSize: 13, color: C.textSub, marginTop: 8, letterSpacing: 0.2 }}>{s.l}</div>
           </div>
         ))}
