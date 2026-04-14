@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 
 // ─────────────────────────────────────────────────────────────
-// DESIGN TOKENS
+// THEME TOKENS — dark + light
 // ─────────────────────────────────────────────────────────────
-const C = {
+const DARK = {
   bg:          "#060606",
   bgCard:      "#111",
   bgCardHover: "#161616",
@@ -14,13 +14,37 @@ const C = {
   text:        "#ffffff",
   textSub:     "#aaa",
   textDim:     "#666",
-  logo:        "#f5c518",   // IMDb-ish yellow — bold, memorable
+  logo:        "#f5c518",
   danger:      "#ff4444",
   success:     "#22c55e",
   warning:     "#f59e0b",
   info:        "#60a5fa",
   purple:      "#a78bfa",
+  shadow:      "rgba(0,0,0,0.8)",
 };
+
+const LIGHT = {
+  bg:          "#f8f8f8",
+  bgCard:      "#ffffff",
+  bgCardHover: "#f2f2f2",
+  bgInput:     "#ffffff",
+  border:      "#e0e0e0",
+  borderHover: "#cccccc",
+  borderFocus: "#999",
+  text:        "#0a0a0a",
+  textSub:     "#555",
+  textDim:     "#999",
+  logo:        "#c49a00",
+  danger:      "#dc2626",
+  success:     "#16a34a",
+  warning:     "#d97706",
+  info:        "#2563eb",
+  purple:      "#7c3aed",
+  shadow:      "rgba(0,0,0,0.12)",
+};
+
+// C is set at runtime — see App() below
+let C = DARK;
 
 // dept icon colors — each department gets its own visible accent
 const DEPT_COLORS = {
@@ -184,16 +208,20 @@ function Field({ label, type = "text", value, onChange, placeholder, required, o
 function Modal({ open, onClose, title, children, width = 500 }) {
   if (!open) return null;
   return (
-    <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.88)", zIndex: 9000, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}
+    <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.88)", zIndex: 9000, display: "flex", alignItems: "flex-end", justifyContent: "center", padding: 0 }}
       onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
-      <div style={{ background: C.bgCard, border: `1px solid ${C.borderHover}`, borderRadius: 12, width: "100%", maxWidth: width, maxHeight: "88vh", overflowY: "auto", boxShadow: "0 32px 80px rgba(0,0,0,0.95)" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 22px", borderBottom: `1px solid ${C.border}` }}>
+      <div style={{ background: C.bgCard, border: `1px solid ${C.borderHover}`, borderRadius: "16px 16px 0 0", width: "100%", maxWidth: width, maxHeight: "92vh", overflowY: "auto", boxShadow: "0 -8px 40px rgba(0,0,0,0.6)", display: "flex", flexDirection: "column" }}>
+        {/* Drag handle */}
+        <div style={{ display: "flex", justifyContent: "center", padding: "12px 0 4px" }}>
+          <div style={{ width: 40, height: 4, borderRadius: 2, background: C.border }} />
+        </div>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 22px 16px", borderBottom: `1px solid ${C.border}` }}>
           <span style={{ fontSize: 17, fontWeight: 600, color: C.text }}>{title}</span>
           <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", padding: 3 }}>
             <Ico name="x" size={17} color={C.textSub} />
           </button>
         </div>
-        <div style={{ padding: 22 }}>{children}</div>
+        <div style={{ padding: 22, overflowY: "auto" }}>{children}</div>
       </div>
     </div>
   );
@@ -213,7 +241,7 @@ function Toast({ message, type = "success" }) {
 // ─────────────────────────────────────────────────────────────
 // NAVBAR  — top only, no sidebar
 // ─────────────────────────────────────────────────────────────
-function Navbar({ page, setPage, user, onLogout }) {
+function Navbar({ page, setPage, user, onLogout, isDark, toggleTheme }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navLinks = user
@@ -222,13 +250,28 @@ function Navbar({ page, setPage, user, onLogout }) {
       : [{ k: "home", label: "Home" }, { k: "dashboard", label: "My Complaints" }, { k: "submit", label: "New Complaint" }]
     : [{ k: "home", label: "Home" }];
 
+  // Theme toggle button — sun/moon
+  const ThemeBtn = () => (
+    <button
+      onClick={toggleTheme}
+      title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+      style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 8, cursor: "pointer", width: 36, height: 36, display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.15s", flexShrink: 0 }}
+      onMouseEnter={e => { e.currentTarget.style.borderColor = C.logo; e.currentTarget.style.background = isDark ? "#1a1600" : "#fffbea"; }}
+      onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.background = C.bgCard; }}>
+      {isDark
+        ? /* Sun icon */ <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f5c518" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        : /* Moon icon */ <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.textSub} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      }
+    </button>
+  );
+
   return (
     <nav className="rx-nav-pad" style={{ height: 64, background: C.bg, borderBottom: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 32px", position: "sticky", top: 0, zIndex: 500 }}>
       {/* Left side: logo + nav links — SEPARATED so clicks don't bubble */}
       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
 
         {/* Logo — only this navigates to home */}
-        <div style={{ display: "flex", alignItems: "center", gap: 0, cursor: "pointer", marginRight: 14 }} onClick={() => setPage("home")}>
+        <div style={{ display: "flex", alignItems: "center", gap: 7, cursor: "pointer", marginRight: 14 }} onClick={() => setPage("home")}>
           <img
             src="/logo.svg"
             alt="ResolveX"
@@ -255,6 +298,7 @@ function Navbar({ page, setPage, user, onLogout }) {
 
       {/* Right side */}
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <ThemeBtn />
         {user ? (
           <>
             {user.role !== "admin" && (
@@ -322,11 +366,19 @@ function HomePage({ setPage, setSelectedDept, user }) {
             <span style={{ fontSize: 13, color: C.textSub, letterSpacing: 1.2, textTransform: "uppercase", fontWeight: 600 }}>⚡ Now Live — Smart Complaint Management</span>
           </div>
           <h1 style={{ fontSize: "clamp(38px,5.5vw,68px)", fontWeight: 700, color: C.text, margin: "0 0 22px", letterSpacing: -3, lineHeight: 1.05, maxWidth: 740 }}>
-            Resolve every issue.<br />
-            <span style={{ color: C.textSub }}> Faster than ever.</span>
+            Every complaint.<br />
+            <span style={{ color: C.logo }}>Resolved.</span>
+            <span style={{ color: C.textSub }}> On time.</span>
           </h1>
-          <p style={{ fontSize: 19, color: C.textSub, maxWidth: 560, margin: "0 0 40px", lineHeight: 1.9, fontWeight: 400 }}>
-            Submit complaints to the right department instantly. Track progress, get notified, and close issues fast.
+          <p style={{ fontSize: 19, maxWidth: 560, margin: "0 0 40px", lineHeight: 1.9, fontWeight: 400 }}>
+            <span style={{ color: C.text, fontWeight: 600 }}>No more chasing people.</span>
+            <span style={{ color: C.textSub }}> Raise a complaint in 30 seconds — </span>
+            <span style={{ color: C.logo, fontWeight: 600 }}>the right team gets it instantly.</span>
+            <br />
+            <span style={{ color: C.textSub }}>Track every update, </span>
+            <span style={{ color: C.text, fontWeight: 600 }}>get notified by email,</span>
+            <span style={{ color: C.textSub }}> and close issues </span>
+            <span style={{ color: "#22c55e", fontWeight: 600 }}>faster than ever before.</span>
           </p>
           {!user && (
             <div className="rx-hero-btns" style={{ display: "flex", gap: 12 }}>
@@ -342,8 +394,8 @@ function HomePage({ setPage, setSelectedDept, user }) {
         <section aria-label="Platform statistics" className="rx-stats" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 0, marginBottom: 140, border: `1px solid ${C.border}`, borderRadius: 10, overflow: "hidden" }}>
           {[
             { v: "1,284",    l: "Complaints resolved", color: "#38bdf8" },
-            { v: "2.4 days", l: "Avg resolution time",  color: "#ff617e" },
-            { v: "8",        l: "Active departments",    color: "#ff9900" },
+            { v: "2.4 days", l: "Avg resolution time",  color: "#fb923c" },
+            { v: "8",        l: "Active departments",    color: "#c084fc" },
             { v: "94%",      l: "Satisfaction rate",     color: "#4ade80" },
           ].map((s, i) => (
             <div key={s.l} style={{ padding: "26px 28px", borderRight: i < 3 ? `1px solid ${C.border}` : "none", background: C.bgCard }}>
@@ -1388,6 +1440,19 @@ export default function App() {
   const [user,         setUser]         = useState(null);
   const [selectedDept, setSelectedDept] = useState("");
   const [toast,        setToast]        = useState({ msg: "", type: "success" });
+  const [isDark,       setIsDark]       = useState(() => {
+    // Persist theme preference in localStorage
+    return localStorage.getItem("rx_theme") !== "light";
+  });
+
+  // Update global C whenever theme changes
+  C = isDark ? DARK : LIGHT;
+
+  const toggleTheme = () => {
+    const next = !isDark;
+    setIsDark(next);
+    localStorage.setItem("rx_theme", next ? "dark" : "light");
+  };
 
   const showToast = (msg, type = "success") => {
     setToast({ msg, type });
@@ -1413,15 +1478,15 @@ export default function App() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: C.bg, color: C.text, fontFamily: "'Inter','SF Pro Display','Segoe UI',-apple-system,sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: C.bg, color: C.text, fontFamily: "'Inter','SF Pro Display','Segoe UI',-apple-system,sans-serif", transition: "background 0.2s, color 0.2s" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         *, *::before, *::after { box-sizing: border-box; }
         html, body { font-size: 16px; }
-        body { margin: 0; background: ${C.bg}; line-height: 1.6; overflow-x: hidden; }
+        body { margin: 0; background: ${C.bg}; line-height: 1.6; overflow-x: hidden; transition: background 0.2s; }
         ::placeholder { color: ${C.textDim}; }
         select, input, textarea, button { font-family: 'Inter','SF Pro Display','Segoe UI',-apple-system,sans-serif; font-size: inherit; }
-        select option { background: #111; color: ${C.text}; }
+        select option { background: ${C.bgCard}; color: ${C.text}; }
         ::-webkit-scrollbar { width: 5px; height: 5px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: ${C.border}; border-radius: 3px; }
@@ -1463,8 +1528,8 @@ export default function App() {
         }
       `}</style>
 
-      <Navbar page={page} setPage={setPage} user={user} onLogout={handleLogout} />
-      <div style={{ minHeight: "calc(100vh - 60px)" }}>{renderPage()}</div>
+      <Navbar page={page} setPage={setPage} user={user} onLogout={handleLogout} isDark={isDark} toggleTheme={toggleTheme} />
+      <div style={{ minHeight: "calc(100vh - 64px)" }}>{renderPage()}</div>
       <Toast message={toast.msg} type={toast.type} />
     </div>
   );
