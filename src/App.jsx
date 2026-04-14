@@ -271,7 +271,7 @@ function Navbar({ page, setPage, user, onLogout, isDark, toggleTheme }) {
       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
 
         {/* Logo — only this navigates to home */}
-        <div style={{ display: "flex", alignItems: "center", gap: 7, cursor: "pointer", marginRight: 14 }} onClick={() => setPage("home")}>
+        <div style={{ display: "flex", alignItems: "center", gap: 0, cursor: "pointer", marginRight: 14 }} onClick={() => setPage("home")}>
           <img
             src="/logo.svg"
             alt="ResolveX"
@@ -366,9 +366,9 @@ function HomePage({ setPage, setSelectedDept, user }) {
             <span style={{ fontSize: 13, color: C.textSub, letterSpacing: 1.2, textTransform: "uppercase", fontWeight: 600 }}>⚡ Now Live — Smart Complaint Management</span>
           </div>
           <h1 style={{ fontSize: "clamp(38px,5.5vw,68px)", fontWeight: 700, color: C.text, margin: "0 0 22px", letterSpacing: -3, lineHeight: 1.05, maxWidth: 740 }}>
-            Every complaint.<br />
-            <span style={{ color: C.logo }}>Resolved.</span>
-            <span style={{ color: C.textSub }}> On time.</span>
+            Resolve every issue.<br />
+            <span style={{ color: C.logo }}>Faster</span>
+            <span style={{ color: C.textSub }}> than ever.</span>
           </h1>
           <p style={{ fontSize: 19, color: C.textSub, maxWidth: 560, margin: "0 0 40px", lineHeight: 1.9, fontWeight: 400 }}>
           Submit complaints to the right department instantly. Track progress, get notified, and close issues fast.
@@ -388,7 +388,7 @@ function HomePage({ setPage, setSelectedDept, user }) {
           {[
             { v: "1,284",    l: "Complaints resolved", color: "#38bdf8" },
             { v: "2.4 days", l: "Avg resolution time",  color: "#ff617e" },
-            { v: "8",        l: "Active departments",    color: "#ff2cb9" },
+            { v: "8",        l: "Active departments",    color: "#ffa72c" },
             { v: "94%",      l: "Satisfaction rate",     color: "#4ade80" },
           ].map((s, i) => (
             <div key={s.l} style={{ padding: "26px 28px", borderRight: i < 3 ? `1px solid ${C.border}` : "none", background: C.bgCard }}>
