@@ -22,7 +22,9 @@ Submit complaints, track status updates, and receive real-time email notificatio
 
 | Home Page | User Dashboard | Admin Dashboard |
 |-----------|---------------|-----------------|
-| Hero section with department grid | Complaint list with filters | Pie charts + complaint table |
+| ![Image 1](https://github.com/user-attachments/assets/f647a4ee-6320-4e45-9dc6-54e1b0792ef8)
+
+![Image 2](https://github.com/user-attachments/assets/1c552ede-fb80-4280-86a1-90585cb2b085)| Complaint list with filters | Pie charts + complaint table |
 
 ---
 
