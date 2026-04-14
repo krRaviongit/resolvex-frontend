@@ -29,12 +29,13 @@ Submit complaints, track status updates, and receive real-time email notificatio
 ---
 ## USER DASHBOARD
 
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/d91f0ce0-56a0-4a43-919c-258a7adc8a23" width="30%" />
-  <img src="https://github.com/user-attachments/assets/a98f3c93-69da-4f95-a07d-ba6350ce5cc7" width="30%" />
-  <img src="https://github.com/user-attachments/assets/539c2b37-5039-4cba-b186-c5ade2933c70" width="30%" />
-</p>
+![Screenshot 1](https://github.com/user-attachments/assets/d91f0ce0-56a0-4a43-919c-258a7adc8a23)
+![Screenshot 2](https://github.com/user-attachments/assets/a98f3c93-69da-4f95-a07d-ba6350ce5cc7)
+![Screenshot 3](https://github.com/user-attachments/assets/539c2b37-5039-4cba-b186-c5ade2933c70)
 
+
+---
+## ADMIN DASHBOARD
 ## ✨ Features
 
 ### 👤 User Features
