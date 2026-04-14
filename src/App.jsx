@@ -223,12 +223,12 @@ function Navbar({ page, setPage, user, onLogout }) {
     : [{ k: "home", label: "Home" }];
 
   return (
-    <nav style={{ height: 64, background: C.bg, borderBottom: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 32px", position: "sticky", top: 0, zIndex: 500 }}>
+    <nav className="rx-nav-pad" style={{ height: 64, background: C.bg, borderBottom: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 32px", position: "sticky", top: 0, zIndex: 500 }}>
       {/* Left side: logo + nav links — SEPARATED so clicks don't bubble */}
       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
 
         {/* Logo — only this navigates to home */}
-        <div style={{ display: "flex", alignItems: "center", gap: 0, cursor: "pointer", marginRight: 14 }} onClick={() => setPage("home")}>
+        <div style={{ display: "flex", alignItems: "center", gap: 7, cursor: "pointer", marginRight: 14 }} onClick={() => setPage("home")}>
           <img
             src="/logo.svg"
             alt="ResolveX"
@@ -239,8 +239,8 @@ function Navbar({ page, setPage, user, onLogout }) {
           <span style={{ fontSize: 19, fontWeight: 700, color: C.logo, letterSpacing: 0.2, userSelect: "none" }}>ResolveX</span>
         </div>
 
-        {/* Nav links — completely outside logo div, no bubbling issue */}
-        <div style={{ display: "flex", alignItems: "center", gap: 2 }}>
+        {/* Nav links */}
+        <div className="rx-nav-links" style={{ display: "flex", alignItems: "center", gap: 2 }}>
           {navLinks.map(link => (
             <button key={link.k}
               onClick={e => { e.stopPropagation(); setPage(link.k); }}
@@ -270,7 +270,7 @@ function Navbar({ page, setPage, user, onLogout }) {
                 <div style={{ width: 26, height: 26, borderRadius: 5, background: C.bgCardHover, border: `1px solid ${C.borderHover}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <span style={{ fontSize: 14, fontWeight: 700, color: C.logo }}>{user.name?.charAt(0).toUpperCase()}</span>
                 </div>
-                <span style={{ fontSize: 15, color: C.textSub }}>{user.name}</span>
+                <span className="rx-user-name" style={{ fontSize: 15, color: C.textSub }}>{user.name}</span>
                 <Ico name="chevDown" size={13} color={C.textDim} />
               </div>
               {menuOpen && (
@@ -313,23 +313,31 @@ function HomePage({ setPage, setSelectedDept, user }) {
   return (
     <>
       {/* SEO-friendly semantic HTML */}
-      <main style={{ maxWidth: 1100, margin: "0 auto", padding: "64px 32px 96px" }}>
+      <main className="rx-hero" style={{ maxWidth: 1100, margin: "0 auto", padding: "64px 32px 96px" }}>
 
         {/* Hero */}
         <header style={{ marginBottom: 80 }}>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 7, border: `1px solid ${C.border}`, borderRadius: 5, padding: "4px 12px", marginBottom: 28 }}>
             <span style={{ width: 6, height: 6, borderRadius: "50%", background: C.success }} />
-            <span style={{ fontSize: 14, color: C.textSub, letterSpacing: 1, textTransform: "uppercase", fontWeight: 500 }}>Smart Complaint Management</span>
+            <span style={{ fontSize: 13, color: C.textSub, letterSpacing: 1.2, textTransform: "uppercase", fontWeight: 600 }}>⚡ Now Live — Smart Complaint Management</span>
           </div>
           <h1 style={{ fontSize: "clamp(38px,5.5vw,68px)", fontWeight: 700, color: C.text, margin: "0 0 22px", letterSpacing: -3, lineHeight: 1.05, maxWidth: 740 }}>
-            Resolve every issue.<br />
-            <span style={{ color: C.textSub }}>Faster than ever.</span>
+            Every complaint.<br />
+            <span style={{ color: C.logo }}>Resolved.</span>
+            <span style={{ color: C.textSub }}> On time.</span>
           </h1>
-          <p style={{ fontSize: 19, color: C.textSub, maxWidth: 500, margin: "0 0 40px", lineHeight: 1.75, fontWeight: 400 }}>
-            Submit complaints to the right department instantly. Track progress, get notified, and close issues fast.
+          <p style={{ fontSize: 19, maxWidth: 560, margin: "0 0 40px", lineHeight: 1.9, fontWeight: 400 }}>
+            <span style={{ color: C.text, fontWeight: 600 }}>No more chasing people.</span>
+            <span style={{ color: C.textSub }}> Raise a complaint in 30 seconds — </span>
+            <span style={{ color: C.logo, fontWeight: 600 }}>the right team gets it instantly.</span>
+            <br />
+            <span style={{ color: C.textSub }}>Track every update, </span>
+            <span style={{ color: C.text, fontWeight: 600 }}>get notified by email,</span>
+            <span style={{ color: C.textSub }}> and close issues </span>
+            <span style={{ color: "#22c55e", fontWeight: 600 }}>faster than ever before.</span>
           </p>
           {!user && (
-            <div style={{ display: "flex", gap: 12 }}>
+            <div className="rx-hero-btns" style={{ display: "flex", gap: 12 }}>
               <Btn size="lg" variant="primary" onClick={() => setPage("register")} style={{ gap: 8 }}>
                 Get started free <Ico name="arrowRight" size={15} color="#000" />
               </Btn>
@@ -339,11 +347,11 @@ function HomePage({ setPage, setSelectedDept, user }) {
         </header>
 
         {/* Stats */}
-        <section aria-label="Platform statistics" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 0, marginBottom: 140, border: `1px solid ${C.border}`, borderRadius: 10, overflow: "hidden" }}>
+        <section aria-label="Platform statistics" className="rx-stats" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 0, marginBottom: 140, border: `1px solid ${C.border}`, borderRadius: 10, overflow: "hidden" }}>
           {[
             { v: "1,284",    l: "Complaints resolved", color: "#38bdf8" },
-            { v: "2.4 days", l: "Avg resolution time",  color: "#ff617e" },
-            { v: "8",        l: "Active departments",    color: "#ff2cb9" },
+            { v: "2.4 days", l: "Avg resolution time",  color: "#fb923c" },
+            { v: "8",        l: "Active departments",    color: "#c084fc" },
             { v: "94%",      l: "Satisfaction rate",     color: "#4ade80" },
           ].map((s, i) => (
             <div key={s.l} style={{ padding: "26px 28px", borderRight: i < 3 ? `1px solid ${C.border}` : "none", background: C.bgCard }}>
@@ -356,7 +364,7 @@ function HomePage({ setPage, setSelectedDept, user }) {
         {/* Departments */}
         <section aria-label="Departments">
           <h2 style={{ fontSize: 14, fontWeight: 600, color: C.textSub, letterSpacing: 1.2, textTransform: "uppercase", margin: "0 0 18px" }}>Departments</h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(220px,1fr))", gap: 1, border: `1px solid ${C.border}`, borderRadius: 10, overflow: "hidden" }}>
+          <div className="rx-dept" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(220px,1fr))", gap: 1, border: `1px solid ${C.border}`, borderRadius: 10, overflow: "hidden" }}>
             {DEPARTMENTS.map((dept, i) => {
               const dColor = DEPT_COLORS[dept.id];
               return (
@@ -541,7 +549,7 @@ function SubmitComplaintPage({ user, selectedDept, setPage, showToast }) {
   );
 
   return (
-    <main style={{ maxWidth: 620, margin: "0 auto", padding: "48px 32px" }}>
+    <main className="rx-page" style={{ maxWidth: 620, margin: "0 auto", padding: "48px 32px" }}>
       <div style={{ marginBottom: 28 }}>
         <h1 style={{ fontSize: 24, fontWeight: 700, color: C.text, margin: "0 0 6px", letterSpacing: -0.5 }}>New complaint</h1>
         <p style={{ color: C.textSub, margin: 0, fontSize: 16 }}>Describe the issue and we'll route it to the right team.</p>
@@ -549,7 +557,7 @@ function SubmitComplaintPage({ user, selectedDept, setPage, showToast }) {
       <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 12, padding: 26 }}>
         <Field label="Title" value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} placeholder="Brief title of the issue" required />
         <Field label="Description" type="textarea" value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} placeholder="Describe the issue in detail…" required rows={5} />
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <div className="rx-form-2col" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
           <Field label="Department" type="select" value={form.department} onChange={e => setForm({ ...form, department: e.target.value })} options={DEPARTMENTS.map(d => d.id)} required />
           <Field label="Priority"   type="select" value={form.priority}   onChange={e => setForm({ ...form, priority: e.target.value })} options={PRIORITIES} required />
         </div>
@@ -560,7 +568,7 @@ function SubmitComplaintPage({ user, selectedDept, setPage, showToast }) {
             Your Location & Contact
             <span style={{ color: C.textDim, fontWeight: 400, textTransform: "none", letterSpacing: 0, marginLeft: 6, fontSize: 12 }}>— helps admin reach you faster</span>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 }}>
+          <div className="rx-form-3col" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 }}>
             <Field
               label="Room / Flat No"
               value={form.roomNo}
@@ -721,7 +729,7 @@ function UserDashboard({ user, setPage, showToast }) {
   };
 
   return (
-    <main style={{ maxWidth: 960, margin: "0 auto", padding: "48px 32px" }}>
+    <main className="rx-page" style={{ maxWidth: 960, margin: "0 auto", padding: "48px 32px" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 36, flexWrap: "wrap", gap: 14 }}>
         <div>
           <h1 style={{ fontSize: 24, fontWeight: 700, color: C.text, margin: "0 0 5px", letterSpacing: -0.5 }}>My Complaints</h1>
@@ -733,7 +741,7 @@ function UserDashboard({ user, setPage, showToast }) {
       </div>
 
       {/* Stats */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 0, border: `1px solid ${C.border}`, borderRadius: 10, overflow: "hidden", marginBottom: 32 }}>
+      <div className="rx-user-stats" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 0, border: `1px solid ${C.border}`, borderRadius: 10, overflow: "hidden", marginBottom: 32 }}>
         {[{ l: "Total", v: stats.total }, { l: "Resolved", v: stats.resolved }, { l: "Active", v: stats.pending }].map((s, i) => (
           <div key={s.l} style={{ padding: "20px 24px", borderRight: i < 2 ? `1px solid ${C.border}` : "none", background: C.bgCard }}>
             <div style={{ fontSize: 28, fontWeight: 700, color: C.text, letterSpacing: -0.8 }}>{s.v}</div>
@@ -743,7 +751,7 @@ function UserDashboard({ user, setPage, showToast }) {
       </div>
 
       {/* Filters */}
-      <div style={{ display: "flex", gap: 8, marginBottom: 18, flexWrap: "wrap", alignItems: "center" }}>
+      <div className="rx-filter-row" style={{ display: "flex", gap: 8, marginBottom: 18, flexWrap: "wrap", alignItems: "center" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8, background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 7, padding: "7px 13px" }}>
           <Ico name="search" size={14} color={C.textDim} />
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search complaints…"
@@ -764,7 +772,7 @@ function UserDashboard({ user, setPage, showToast }) {
           <div style={{ color: C.textSub, fontSize: 16, marginTop: 12 }}>No complaints found. Submit one to get started.</div>
         </div>
       ) : (
-        <div style={{ border: `1px solid ${C.border}`, borderRadius: 10, overflow: "hidden" }}>
+        <div className="rx-table-wrap" style={{ border: `1px solid ${C.border}`, borderRadius: 10, overflow: "hidden" }}>
           {filtered.map((c, i) => {
             const dept   = DEPARTMENTS.find(d => d.id === c.department);
             const dColor = DEPT_COLORS[c.department] || C.textSub;
@@ -906,14 +914,14 @@ function AdminDashboard({ showToast }) {
   const selStyle   = { padding: "7px 11px", borderRadius: 6, border: `1px solid ${C.border}`, fontSize: 15, fontFamily: "inherit", background: C.bgCard, color: C.text, outline: "none", cursor: "pointer" };
 
   return (
-    <main style={{ maxWidth: 1100, margin: "0 auto", padding: "48px 32px" }}>
+    <main className="rx-page" style={{ maxWidth: 1100, margin: "0 auto", padding: "48px 32px" }}>
       <div style={{ marginBottom: 36 }}>
         <h1 style={{ fontSize: 24, fontWeight: 700, color: C.text, margin: "0 0 5px", letterSpacing: -0.5 }}>Admin Dashboard</h1>
         <p style={{ fontSize: 16, color: C.textSub, margin: 0 }}>All complaints across every department</p>
       </div>
 
       {/* ── Stat Cards ── */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12, marginBottom: 28 }}>
+      <div className="rx-admin-stats" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12, marginBottom: 28 }}>
         {[
           { l: "Total",       v: stats.total,      color: "#fff",     bg: "#111",    border: C.border },
           { l: "New",         v: stats.new,        color: "#60a5fa",  bg: "#0a1020", border: "#60a5fa33" },
@@ -928,7 +936,7 @@ function AdminDashboard({ showToast }) {
       </div>
 
       {/* ── Pie Charts ── */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 32 }}>
+      <div className="rx-charts" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 32 }}>
 
         {/* Status Pie */}
         {(() => {
@@ -958,7 +966,7 @@ function AdminDashboard({ showToast }) {
           return (
             <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 12, padding: "24px 28px" }}>
               <p style={{ fontSize: 13, fontWeight: 600, color: C.textSub, letterSpacing: 1, textTransform: "uppercase", margin: "0 0 20px" }}>By Status</p>
-              <div style={{ display: "flex", alignItems: "center", gap: 32 }}>
+              <div className="rx-pie" style={{ display: "flex", alignItems: "center", gap: 32 }}>
                 <div style={{ flexShrink: 0 }}>
                   <svg width="220" height="220" viewBox="0 0 220 220" style={{ overflow: "visible" }}>
                     {segments.map(seg => (
@@ -1038,7 +1046,7 @@ function AdminDashboard({ showToast }) {
           return (
             <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 12, padding: "24px 28px" }}>
               <p style={{ fontSize: 13, fontWeight: 600, color: C.textSub, letterSpacing: 1, textTransform: "uppercase", margin: "0 0 20px" }}>By Department</p>
-              <div style={{ display: "flex", alignItems: "center", gap: 32 }}>
+              <div className="rx-pie" style={{ display: "flex", alignItems: "center", gap: 32 }}>
                 <div style={{ flexShrink: 0 }}>
                   <svg width="220" height="220" viewBox="0 0 220 220" style={{ overflow: "visible" }}>
                     {segments.map(seg => (
@@ -1095,7 +1103,7 @@ function AdminDashboard({ showToast }) {
       </div>
 
       {/* Filters */}
-      <div style={{ display: "flex", gap: 8, marginBottom: 14, flexWrap: "wrap", alignItems: "center" }}>
+      <div className="rx-filter-row" style={{ display: "flex", gap: 8, marginBottom: 14, flexWrap: "wrap", alignItems: "center" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8, background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 7, padding: "7px 13px" }}>
           <Ico name="search" size={14} color={C.textDim} />
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search complaints…"
@@ -1208,7 +1216,7 @@ function AdminDashboard({ showToast }) {
         {selected && (
           <>
             {/* ── Submitter info panel ── */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 16, padding: "16px", background: "#0a0a0a", borderRadius: 10, border: `1px solid ${C.border}` }}>
+            <div className="rx-modal-2col" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 16, padding: "16px", background: "#0a0a0a", borderRadius: 10, border: `1px solid ${C.border}` }}>
               {/* Left: User */}
               <div>
                 <div style={{ fontSize: 11, color: C.textDim, textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 8 }}>Submitted By</div>
@@ -1353,7 +1361,7 @@ function ProfilePage({ user, setUser, setPage, showToast }) {
   };
 
   return (
-    <main style={{ maxWidth: 520, margin: "0 auto", padding: "48px 32px" }}>
+    <main className="rx-page" style={{ maxWidth: 520, margin: "0 auto", padding: "48px 32px" }}>
       <h1 style={{ fontSize: 24, fontWeight: 700, color: C.text, margin: "0 0 28px", letterSpacing: -0.5 }}>Profile</h1>
       <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 12, padding: 26 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 26, paddingBottom: 22, borderBottom: `1px solid ${C.border}` }}>
@@ -1415,16 +1423,52 @@ export default function App() {
   return (
     <div style={{ minHeight: "100vh", background: C.bg, color: C.text, fontFamily: "'Inter','SF Pro Display','Segoe UI',-apple-system,sans-serif" }}>
       <style>{`
-        * { box-sizing: border-box; }
-        body { margin: 0; background: ${C.bg}; }
-        ::placeholder { color: ${C.textDim}; font-size: 13px; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        *, *::before, *::after { box-sizing: border-box; }
+        html, body { font-size: 16px; }
+        body { margin: 0; background: ${C.bg}; line-height: 1.6; overflow-x: hidden; }
+        ::placeholder { color: ${C.textDim}; }
+        select, input, textarea, button { font-family: 'Inter','SF Pro Display','Segoe UI',-apple-system,sans-serif; font-size: inherit; }
         select option { background: #111; color: ${C.text}; }
         ::-webkit-scrollbar { width: 5px; height: 5px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: ${C.border}; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: ${C.borderHover}; }
         @keyframes fadeUp { from { transform: translateY(8px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ── MOBILE RESPONSIVE ── */
+        @media (max-width: 640px) {
+          .rx-nav-links   { display: none !important; }
+          .rx-user-name   { display: none !important; }
+          .rx-nav-pad     { padding: 0 16px !important; }
+          .rx-hero-btns   { flex-direction: column; }
+          .rx-hero-btns > * { width: 100% !important; justify-content: center !important; }
+          .rx-stats       { grid-template-columns: repeat(2,1fr) !important; }
+          .rx-stats > div:nth-child(2) { border-right: none !important; }
+          .rx-stats > div:nth-child(3) { border-top: 1px solid ${C.border} !important; }
+          .rx-stats > div:nth-child(4) { border-top: 1px solid ${C.border} !important; border-right: none !important; }
+          .rx-dept        { grid-template-columns: repeat(2,1fr) !important; }
+          .rx-form-2col   { grid-template-columns: 1fr !important; }
+          .rx-form-3col   { grid-template-columns: 1fr !important; }
+          .rx-pie         { flex-direction: column !important; align-items: center !important; }
+          .rx-charts      { grid-template-columns: 1fr !important; }
+          .rx-admin-stats { grid-template-columns: repeat(2,1fr) !important; }
+          .rx-admin-stats > div:nth-child(2) { border-right: none !important; }
+          .rx-admin-stats > div:nth-child(3) { border-top: 1px solid ${C.border} !important; }
+          .rx-admin-stats > div:nth-child(4) { border-top: 1px solid ${C.border} !important; border-right: none !important; }
+          .rx-table-wrap  { overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
+          .rx-filter-row  { flex-wrap: wrap !important; }
+          .rx-filter-row select { flex: 1 1 140px !important; }
+          .rx-modal-2col  { grid-template-columns: 1fr !important; }
+          .rx-page        { padding: 28px 16px !important; }
+          .rx-hero        { padding: 36px 16px 56px !important; }
+          .rx-user-stats  { grid-template-columns: repeat(3,1fr) !important; }
+        }
+        @media (max-width: 400px) {
+          .rx-dept        { grid-template-columns: 1fr !important; }
+          .rx-user-stats  { grid-template-columns: 1fr !important; }
+        }
       `}</style>
 
       <Navbar page={page} setPage={setPage} user={user} onLogout={handleLogout} />
