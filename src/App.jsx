@@ -322,19 +322,11 @@ function HomePage({ setPage, setSelectedDept, user }) {
             <span style={{ fontSize: 13, color: C.textSub, letterSpacing: 1.2, textTransform: "uppercase", fontWeight: 600 }}>⚡ Now Live — Smart Complaint Management</span>
           </div>
           <h1 style={{ fontSize: "clamp(38px,5.5vw,68px)", fontWeight: 700, color: C.text, margin: "0 0 22px", letterSpacing: -3, lineHeight: 1.05, maxWidth: 740 }}>
-            Every complaint.<br />
-            <span style={{ color: C.logo }}>Resolved.</span>
-            <span style={{ color: C.textSub }}> On time.</span>
+            Resolve every issue.<br />
+            <span style={{ color: C.textSub }}> Faster than ever.</span>
           </h1>
-          <p style={{ fontSize: 19, maxWidth: 560, margin: "0 0 40px", lineHeight: 1.9, fontWeight: 400 }}>
-            <span style={{ color: C.text, fontWeight: 600 }}>No more chasing people.</span>
-            <span style={{ color: C.textSub }}> Raise a complaint in 30 seconds — </span>
-            <span style={{ color: C.logo, fontWeight: 600 }}>the right team gets it instantly.</span>
-            <br />
-            <span style={{ color: C.textSub }}>Track every update, </span>
-            <span style={{ color: C.text, fontWeight: 600 }}>get notified by email,</span>
-            <span style={{ color: C.textSub }}> and close issues </span>
-            <span style={{ color: "#22c55e", fontWeight: 600 }}>faster than ever before.</span>
+          <p style={{ fontSize: 19, color: C.textSub, maxWidth: 560, margin: "0 0 40px", lineHeight: 1.9, fontWeight: 400 }}>
+            Submit complaints to the right department instantly. Track progress, get notified, and close issues fast.
           </p>
           {!user && (
             <div className="rx-hero-btns" style={{ display: "flex", gap: 12 }}>
@@ -350,8 +342,8 @@ function HomePage({ setPage, setSelectedDept, user }) {
         <section aria-label="Platform statistics" className="rx-stats" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 0, marginBottom: 140, border: `1px solid ${C.border}`, borderRadius: 10, overflow: "hidden" }}>
           {[
             { v: "1,284",    l: "Complaints resolved", color: "#38bdf8" },
-            { v: "2.4 days", l: "Avg resolution time",  color: "#fb923c" },
-            { v: "8",        l: "Active departments",    color: "#c084fc" },
+            { v: "2.4 days", l: "Avg resolution time",  color: "#ff617e" },
+            { v: "8",        l: "Active departments",    color: "#ff2cb9" },
             { v: "94%",      l: "Satisfaction rate",     color: "#4ade80" },
           ].map((s, i) => (
             <div key={s.l} style={{ padding: "26px 28px", borderRight: i < 3 ? `1px solid ${C.border}` : "none", background: C.bgCard }}>
