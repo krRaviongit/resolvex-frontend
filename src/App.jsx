@@ -343,7 +343,7 @@ function HomePage({ setPage, setSelectedDept, user }) {
           {[
             { v: "1,284",    l: "Complaints resolved", color: "#38bdf8" },
             { v: "2.4 days", l: "Avg resolution time",  color: "#ff617e" },
-            { v: "8",        l: "Active departments",    color: "#bd0094" },
+            { v: "8",        l: "Active departments",    color: "#ff9900" },
             { v: "94%",      l: "Satisfaction rate",     color: "#4ade80" },
           ].map((s, i) => (
             <div key={s.l} style={{ padding: "26px 28px", borderRight: i < 3 ? `1px solid ${C.border}` : "none", background: C.bgCard }}>
