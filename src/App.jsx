@@ -24,26 +24,23 @@ const DARK = {
 };
 
 const LIGHT = {
-  bg:          "#f4f6f9",
-  bgCard:      "#ffffff",
-  bgCardHover: "#f8fafc",
-  bgInput:     "#ffffff",
-  border:      "#e2e8f0",
-  borderHover: "#cbd5e1",
-  borderFocus: "#6366f1",
-  text:        "#0f172a",
-  textSub:     "#475569",
-  textDim:     "#94a3b8",
-  logo:        "#b45309",
-  danger:      "#dc2626",
-  success:     "#16a34a",
-  warning:     "#d97706",
-  info:        "#2563eb",
-  purple:      "#7c3aed",
-  shadow:      "rgba(15,23,42,0.08)",
-  // Light-only extras
-  accent:      "#6366f1",   // indigo accent for buttons
-  accentText:  "#ffffff",
+  bg:          "#ffffff",       // Pure white page — clean like Linear/Notion
+  bgCard:      "#ffffff",       // White cards
+  bgCardHover: "#fafafa",       // Barely-there hover
+  bgInput:     "#f9fafb",       // Slightly off-white inputs
+  border:      "#f0f0f0",       // Very subtle borders
+  borderHover: "#e0e0e0",       // Slightly visible on hover
+  borderFocus: "#111111",       // Black focus ring — sharp
+  text:        "#111111",       // Near-black, not harsh
+  textSub:     "#6b7280",       // Medium grey — readable
+  textDim:     "#9ca3af",       // Light grey — metadata
+  logo:        "#f5c518",       // Same yellow as dark — brand consistency
+  danger:      "#ef4444",
+  success:     "#10b981",
+  warning:     "#f59e0b",
+  info:        "#3b82f6",
+  purple:      "#8b5cf6",
+  shadow:      "rgba(0,0,0,0.06)",
 };
 
 // C is set at runtime — see App() below
@@ -163,7 +160,7 @@ function Badge({ status, type = "status" }) {
   const color = type === "status" ? STATUS_COLORS[status] : PRIORITY_COLORS[status];
   if (!color) return null;
   return (
-    <span style={{ display: "inline-flex", alignItems: "center", gap: 5, padding: "3px 9px", borderRadius: 4, border: `1px solid ${color}33`, fontSize: 14, fontWeight: 500, color, letterSpacing: 0.2, whiteSpace: "nowrap" }}>
+    <span style={{ display: "inline-flex", alignItems: "center", gap: 5, padding: "3px 10px", borderRadius: 20, border: `1px solid ${color}44`, fontSize: 13, fontWeight: 600, color, letterSpacing: 0.1, whiteSpace: "nowrap", background: `${color}11` }}>
       {type === "status" && <span style={{ width: 6, height: 6, borderRadius: "50%", background: color, flexShrink: 0 }} />}
       {status}
     </span>
@@ -178,18 +175,19 @@ function Btn({ children, onClick, variant = "primary", size = "md", disabled, st
   const v = {
     primary: isDark
       ? { background: "#ffffff", color: "#000000", border: "none" }
-      : { background: "#6366f1", color: "#ffffff",  border: "none" },
+      : { background: "#111111", color: "#ffffff",  border: "none" },   // Black on white — clean, modern
     ghost: isDark
       ? { background: "transparent", color: C.textSub, border: `1px solid ${C.border}` }
-      : { background: "#ffffff",     color: C.textSub, border: `1px solid ${C.border}` },
-    danger:  { background: "transparent", color: C.danger, border: `1px solid ${C.danger}44` },
-    subtle:  { background: C.bgCard,      color: C.textSub, border: `1px solid ${C.border}` },
+      : { background: "transparent", color: C.text,    border: `1px solid #d1d5db` },
+    danger:  { background: "transparent", color: C.danger, border: `1px solid ${C.danger}55` },
+    subtle:  { background: isDark ? C.bgCard : "#f9fafb", color: C.textSub, border: `1px solid ${C.border}` },
   };
+  const lightPrimShadow = "0 1px 2px rgba(0,0,0,0.08)";
   return (
     <button type={type} onClick={onClick} disabled={disabled}
-      style={{ ...sz[size], ...v[variant], borderRadius: 8, fontWeight: 600, fontFamily: "inherit", cursor: disabled ? "not-allowed" : "pointer", opacity: disabled ? 0.4 : 1, display: "inline-flex", alignItems: "center", gap: 7, transition: "all 0.15s", letterSpacing: 0.1, boxShadow: !isDark && variant === "primary" ? "0 1px 3px rgba(99,102,241,0.3)" : "none", ...style }}
-      onMouseEnter={e => { if (!disabled) { e.currentTarget.style.opacity = "0.88"; e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = !isDark && variant==="primary" ? "0 4px 12px rgba(99,102,241,0.35)" : "none"; } }}
-      onMouseLeave={e => { e.currentTarget.style.opacity = "1"; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = !isDark && variant==="primary" ? "0 1px 3px rgba(99,102,241,0.3)" : "none"; }}
+      style={{ ...sz[size], ...v[variant], borderRadius: 8, fontWeight: 600, fontFamily: "inherit", cursor: disabled ? "not-allowed" : "pointer", opacity: disabled ? 0.4 : 1, display: "inline-flex", alignItems: "center", gap: 7, transition: "all 0.15s", letterSpacing: 0.1, boxShadow: !isDark && variant === "primary" ? lightPrimShadow : "none", ...style }}
+      onMouseEnter={e => { if (!disabled) { e.currentTarget.style.opacity = "0.85"; e.currentTarget.style.transform = "translateY(-1px)"; } }}
+      onMouseLeave={e => { e.currentTarget.style.opacity = "1"; e.currentTarget.style.transform = "translateY(0)"; }}
     >{children}</button>
   );
 }
@@ -220,7 +218,7 @@ function Modal({ open, onClose, title, children, width = 500 }) {
   return (
     <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.88)", zIndex: 9000, display: "flex", alignItems: "flex-end", justifyContent: "center", padding: 0 }}
       onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
-      <div style={{ background: C.bgCard, border: `1px solid ${C.borderHover}`, borderRadius: "16px 16px 0 0", width: "100%", maxWidth: width, maxHeight: "92vh", overflowY: "auto", boxShadow: "0 -8px 40px rgba(0,0,0,0.6)", display: "flex", flexDirection: "column" }}>
+      <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: "16px 16px 0 0", width: "100%", maxWidth: width, maxHeight: "92vh", overflowY: "auto", boxShadow: C.bg === "#060606" ? "0 -8px 40px rgba(0,0,0,0.6)" : "0 -4px 30px rgba(0,0,0,0.1)", display: "flex", flexDirection: "column" }}>
         {/* Drag handle */}
         <div style={{ display: "flex", justifyContent: "center", padding: "12px 0 4px" }}>
           <div style={{ width: 40, height: 4, borderRadius: 2, background: C.border }} />
@@ -241,7 +239,7 @@ function Toast({ message, type = "success" }) {
   if (!message) return null;
   const col = { success: C.success, error: C.danger, info: C.textSub };
   return (
-    <div style={{ position: "fixed", bottom: 28, right: 28, background: C.bgCard, color: col[type], padding: "12px 18px", borderRadius: 8, fontSize: 15, fontWeight: 500, border: `1px solid ${C.borderHover}`, zIndex: 9999, animation: "fadeUp 0.22s ease", display: "flex", alignItems: "center", gap: 8, boxShadow: C.bg === "#060606" ? "0 8px 32px rgba(0,0,0,0.8)" : "0 4px 16px rgba(0,0,0,0.12)" }}>
+    <div style={{ position: "fixed", bottom: 28, right: 28, background: C.bgCard, color: col[type], padding: "12px 18px", borderRadius: 8, fontSize: 15, fontWeight: 500, border: `1px solid ${C.borderHover}`, zIndex: 9999, animation: "fadeUp 0.22s ease", display: "flex", alignItems: "center", gap: 8, boxShadow: C.bg === "#060606" ? "0 8px 32px rgba(0,0,0,0.8)" : "0 4px 20px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.06)" }}>
       <Ico name={type === "success" ? "check" : "x"} size={14} color={col[type]} sw={2.2} />
       {message}
     </div>
@@ -265,7 +263,7 @@ function Navbar({ page, setPage, user, onLogout, isDark, toggleTheme }) {
     <button
       onClick={toggleTheme}
       title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
-      style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 8, cursor: "pointer", width: 36, height: 36, display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.15s", flexShrink: 0 }}
+      style={{ background: C.bg === "#060606" ? C.bgCard : "#f3f4f6", border: `1px solid ${C.border}`, borderRadius: 8, cursor: "pointer", width: 36, height: 36, display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.15s", flexShrink: 0 }}
       onMouseEnter={e => { e.currentTarget.style.borderColor = C.logo; e.currentTarget.style.background = isDark ? "#1a1600" : "#fffbea"; }}
       onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.background = C.bgCard; }}>
       {isDark
@@ -276,12 +274,12 @@ function Navbar({ page, setPage, user, onLogout, isDark, toggleTheme }) {
   );
 
   return (
-    <nav className="rx-nav-pad" style={{ height: 64, background: C.bgCard, borderBottom: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 32px", position: "sticky", top: 0, zIndex: 500, boxShadow: C.bg === "#060606" ? "none" : "0 1px 3px rgba(0,0,0,0.08)" }}>
+    <nav className="rx-nav-pad" style={{ height: 64, background: C.bg === "#060606" ? C.bg : "#ffffff", borderBottom: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 32px", position: "sticky", top: 0, zIndex: 500, boxShadow: C.bg === "#060606" ? "none" : "0 1px 0 #f0f0f0" }}>
       {/* Left side: logo + nav links — SEPARATED so clicks don't bubble */}
       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
 
         {/* Logo — only this navigates to home */}
-        <div style={{ display: "flex", alignItems: "center", gap: 0, cursor: "pointer", marginRight: 14 }} onClick={() => setPage("home")}>
+        <div style={{ display: "flex", alignItems: "center", gap: 7, cursor: "pointer", marginRight: 14 }} onClick={() => setPage("home")}>
           <img
             src="/logo.svg"
             alt="ResolveX"
@@ -313,7 +311,7 @@ function Navbar({ page, setPage, user, onLogout, isDark, toggleTheme }) {
           <>
             {user.role !== "admin" && (
               <Btn size="sm" variant="primary" onClick={() => setPage("submit")} style={{ gap: 5 }}>
-                <Ico name="plus" size={13} color="#000" sw={2} />New
+                <Ico name="plus" size={13} color={C.bg === "#060606" ? "#000" : "#fff"} sw={2} />New
               </Btn>
             )}
             <div style={{ position: "relative" }}>
@@ -328,7 +326,7 @@ function Navbar({ page, setPage, user, onLogout, isDark, toggleTheme }) {
                 <Ico name="chevDown" size={13} color={C.textDim} />
               </div>
               {menuOpen && (
-                <div style={{ position: "absolute", right: 0, top: 46, background: C.bgCard, border: `1px solid ${C.borderHover}`, borderRadius: 9, minWidth: 180, zIndex: 999, boxShadow: "0 12px 40px rgba(0,0,0,0.8)", overflow: "hidden" }}>
+                <div style={{ position: "absolute", right: 0, top: 46, background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 12, minWidth: 190, zIndex: 999, boxShadow: C.bg === "#060606" ? "0 12px 40px rgba(0,0,0,0.8)" : "0 8px 30px rgba(0,0,0,0.12), 0 1px 3px rgba(0,0,0,0.06)", overflow: "hidden" }}>
                   <div style={{ padding: "12px 16px", borderBottom: `1px solid ${C.border}` }}>
                     <div style={{ fontSize: 16, fontWeight: 600, color: C.text }}>{user.name}</div>
                     <div style={{ fontSize: 14, color: C.textSub, marginTop: 2 }}>{user.email}</div>
@@ -340,8 +338,8 @@ function Navbar({ page, setPage, user, onLogout, isDark, toggleTheme }) {
                     <Ico name="user" size={14} color="currentColor" />Profile
                   </div>
                   <div onClick={() => { onLogout(); setMenuOpen(false); }}
-                    style={{ display: "flex", alignItems: "center", gap: 9, padding: "11px 16px", cursor: "pointer", fontSize: 16, color: C.textSub, transition: "background 0.1s" }}
-                    onMouseEnter={e => { e.currentTarget.style.background = "#1a0a0a"; e.currentTarget.style.color = C.danger; }}
+                    style={{ display: "flex", alignItems: "center", gap: 9, padding: "11px 16px", cursor: "pointer", fontSize: 16, color: C.textSub, transition: "all 0.1s" }}
+                    onMouseEnter={e => { e.currentTarget.style.background = C.bg === "#060606" ? "#1a0a0a" : "#fff1f1"; e.currentTarget.style.color = C.danger; }}
                     onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = C.textSub; }}>
                     <Ico name="logout" size={14} color="currentColor" />Sign Out
                   </div>
@@ -376,17 +374,24 @@ function HomePage({ setPage, setSelectedDept, user }) {
             <span style={{ fontSize: 13, color: C.textSub, letterSpacing: 1.2, textTransform: "uppercase", fontWeight: 600 }}>⚡ Now Live — Smart Complaint Management</span>
           </div>
           <h1 style={{ fontSize: "clamp(38px,5.5vw,68px)", fontWeight: 700, color: C.text, margin: "0 0 22px", letterSpacing: -3, lineHeight: 1.05, maxWidth: 740 }}>
-            Resolve every issue.<br />
-            <span style={{ color: C.logo }}>Faster</span>
-            <span style={{ color: C.textSub }}> than ever.</span>
+            Every complaint.<br />
+            <span style={{ color: C.logo }}>Resolved.</span>
+            <span style={{ color: C.textSub }}> On time.</span>
           </h1>
-          <p style={{ fontSize: 19, color: C.textSub, maxWidth: 560, margin: "0 0 40px", lineHeight: 1.9, fontWeight: 400 }}>
-          Submit complaints to the right department instantly. Track progress, get notified, and close issues fast.
+          <p style={{ fontSize: 19, maxWidth: 560, margin: "0 0 40px", lineHeight: 1.9, fontWeight: 400 }}>
+            <span style={{ color: C.text, fontWeight: 600 }}>No more chasing people.</span>
+            <span style={{ color: C.textSub }}> Raise a complaint in 30 seconds — </span>
+            <span style={{ color: C.logo, fontWeight: 600 }}>the right team gets it instantly.</span>
+            <br />
+            <span style={{ color: C.textSub }}>Track every update, </span>
+            <span style={{ color: C.text, fontWeight: 600 }}>get notified by email,</span>
+            <span style={{ color: C.textSub }}> and close issues </span>
+            <span style={{ color: "#22c55e", fontWeight: 600 }}>faster than ever before.</span>
           </p>
           {!user && (
             <div className="rx-hero-btns" style={{ display: "flex", gap: 12 }}>
               <Btn size="lg" variant="primary" onClick={() => setPage("register")} style={{ gap: 8 }}>
-                Get started free <Ico name="arrowRight" size={15} color={C.bg === "#060606" ? "#000" : "#fff"} />
+                Get started free <Ico name="arrowRight" size={15} color={C.bg === "#060606" ? "#000" : "#ffffff"} />
               </Btn>
               <Btn size="lg" variant="ghost" onClick={() => setPage("login")}>Sign in</Btn>
             </div>
@@ -394,11 +399,11 @@ function HomePage({ setPage, setSelectedDept, user }) {
         </header>
 
         {/* Stats */}
-        <section aria-label="Platform statistics" className="rx-stats" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 0, marginBottom: 140, border: `1px solid ${C.border}`, borderRadius: 12, overflow: "hidden", boxShadow: C.bg === "#060606" ? "none" : "0 2px 8px rgba(0,0,0,0.06)" }}>
+        <section aria-label="Platform statistics" className="rx-stats" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 0, marginBottom: 140, border: `1px solid ${C.border}`, borderRadius: 14, overflow: "hidden", boxShadow: C.bg === "#060606" ? "none" : "0 2px 12px rgba(0,0,0,0.07)" }}>
           {[
             { v: "1,284",    l: "Complaints resolved", color: "#38bdf8" },
-            { v: "2.4 days", l: "Avg resolution time",  color: "#ff617e" },
-            { v: "8",        l: "Active departments",    color: "#c0ff2c" },
+            { v: "2.4 days", l: "Avg resolution time",  color: "#fb923c" },
+            { v: "8",        l: "Active departments",    color: "#c084fc" },
             { v: "94%",      l: "Satisfaction rate",     color: "#4ade80" },
           ].map((s, i) => (
             <div key={s.l} style={{ padding: "26px 28px", borderRight: i < 3 ? `1px solid ${C.border}` : "none", background: C.bgCard }}>
@@ -411,7 +416,7 @@ function HomePage({ setPage, setSelectedDept, user }) {
         {/* Departments */}
         <section aria-label="Departments">
           <h2 style={{ fontSize: 14, fontWeight: 600, color: C.textSub, letterSpacing: 1.2, textTransform: "uppercase", margin: "0 0 18px" }}>Departments</h2>
-          <div className="rx-dept" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(220px,1fr))", gap: 0, border: `1px solid ${C.border}`, borderRadius: 12, overflow: "hidden", boxShadow: C.bg === "#060606" ? "none" : "0 2px 8px rgba(0,0,0,0.06)" }}>
+          <div className="rx-dept" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(220px,1fr))", gap: 0, border: `1px solid ${C.border}`, borderRadius: 14, overflow: "hidden", boxShadow: C.bg === "#060606" ? "none" : "0 2px 12px rgba(0,0,0,0.07)" }}>
             {DEPARTMENTS.map((dept, i) => {
               const dColor = DEPT_COLORS[dept.id];
               return (
@@ -501,7 +506,7 @@ function AuthPage({ mode, setPage, onLogin }) {
             {isLogin ? "Sign in to continue to ResolveX" : "Join ResolveX — it's free"}
           </p>
         </div>
-        <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 12, padding: 26 }}>
+        <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 14, padding: 28, boxShadow: C.bg === "#060606" ? "none" : "0 2px 16px rgba(0,0,0,0.07)" }}>
           {!isLogin && <Field label="Full Name" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder="John Doe" required />}
           <Field label="Email" type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} placeholder="you@example.com" required />
           <Field label="Password" type="password" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} placeholder="Min. 6 characters" required />
@@ -622,7 +627,7 @@ function SubmitComplaintPage({ user, selectedDept, setPage, showToast }) {
         <h1 style={{ fontSize: 24, fontWeight: 700, color: C.text, margin: "0 0 6px", letterSpacing: -0.5 }}>New complaint</h1>
         <p style={{ color: C.textSub, margin: 0, fontSize: 16 }}>Describe the issue and we'll route it to the right team.</p>
       </div>
-      <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 12, padding: 26 }}>
+      <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 14, padding: 28, boxShadow: C.bg === "#060606" ? "none" : "0 2px 16px rgba(0,0,0,0.07)" }}>
         <Field label="Title" value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} placeholder="Brief title of the issue" required />
         <Field label="Description" type="textarea" value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} placeholder="Describe the issue in detail…" required rows={5} />
         <div className="rx-form-2col" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
@@ -804,7 +809,7 @@ function UserDashboard({ user, setPage, showToast }) {
           <p style={{ fontSize: 16, color: C.textSub, margin: 0 }}>Track and manage your submitted issues</p>
         </div>
         <Btn variant="primary" size="sm" onClick={() => setPage("submit")} style={{ gap: 6 }}>
-          <Ico name="plus" size={13} color="#000" sw={2} />New complaint
+          <Ico name="plus" size={13} color={C.bg === "#060606" ? "#000" : "#fff"} sw={2} />New complaint
         </Btn>
       </div>
 
@@ -813,21 +818,21 @@ function UserDashboard({ user, setPage, showToast }) {
         {[{ l: "Total", v: stats.total }, { l: "Resolved", v: stats.resolved }, { l: "Active", v: stats.pending }].map((s, i) => (
           <div key={s.l} style={{ padding: "20px 24px", borderRight: i < 2 ? `1px solid ${C.border}` : "none", background: C.bgCard, transition: "background 0.2s" }}>
             <div style={{ fontSize: 28, fontWeight: 700, color: C.text, letterSpacing: -0.8 }}>{s.v}</div>
-            <div style={{ fontSize: 15, color: C.textSub, marginTop: 3 }}>{s.l}</div>
+            <div style={{ fontSize: 14, color: C.textSub, marginTop: 4, fontWeight: 500 }}>{s.l}</div>
           </div>
         ))}
       </div>
 
       {/* Filters */}
       <div className="rx-filter-row" style={{ display: "flex", gap: 8, marginBottom: 18, flexWrap: "wrap", alignItems: "center" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8, background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 7, padding: "7px 13px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, background: C.bg === "#060606" ? C.bgCard : "#f9fafb", border: `1px solid ${C.border}`, borderRadius: 8, padding: "7px 13px" }}>
           <Ico name="search" size={14} color={C.textDim} />
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search complaints…"
             style={{ background: "none", border: "none", outline: "none", fontSize: 15, color: C.text, fontFamily: "inherit", width: 180 }} />
         </div>
         {["All", ...STATUSES].map(s => (
           <button key={s} onClick={() => setStatusFilter(s)}
-            style={{ padding: "6px 13px", borderRadius: 6, border: `1px solid ${statusFilter === s ? C.borderFocus : C.border}`, background: statusFilter === s ? C.bgCardHover : "transparent", color: statusFilter === s ? C.text : C.textSub, fontSize: 15, cursor: "pointer", fontFamily: "inherit", transition: "all 0.12s" }}>{s}</button>
+            style={{ padding: "6px 13px", borderRadius: 20, border: `1px solid ${statusFilter === s ? C.text : C.border}`, background: statusFilter === s ? C.text : "transparent", color: statusFilter === s ? (C.bg === "#060606" ? "#000" : "#fff") : C.textSub, fontSize: 14, cursor: "pointer", fontFamily: "inherit", fontWeight: statusFilter === s ? 600 : 400, transition: "all 0.12s" }}>{s}</button>
         ))}
       </div>
 
@@ -840,14 +845,14 @@ function UserDashboard({ user, setPage, showToast }) {
           <div style={{ color: C.textSub, fontSize: 16, marginTop: 12 }}>No complaints found. Submit one to get started.</div>
         </div>
       ) : (
-        <div className="rx-table-wrap" style={{ border: `1px solid ${C.border}`, borderRadius: 10, overflow: "hidden" }}>
+        <div className="rx-table-wrap" style={{ border: `1px solid ${C.border}`, borderRadius: 14, overflow: "hidden", boxShadow: C.bg === "#060606" ? "none" : "0 1px 4px rgba(0,0,0,0.06)" }}>
           {filtered.map((c, i) => {
             const dept   = DEPARTMENTS.find(d => d.id === c.department);
             const dColor = DEPT_COLORS[c.department] || C.textSub;
             return (
               <div key={c.id} style={{ padding: "18px 22px", borderBottom: i < filtered.length - 1 ? `1px solid ${C.border}` : "none", transition: "background 0.1s" }}
                 onMouseEnter={e => e.currentTarget.style.background = C.bgCardHover}
-                onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
+                onMouseLeave={e => e.currentTarget.style.background = C.bg === "#060606" ? "transparent" : C.bgCard}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 14, flexWrap: "wrap" }}>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 7 }}>
@@ -992,9 +997,9 @@ function AdminDashboard({ showToast }) {
       <div className="rx-admin-stats" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12, marginBottom: 28 }}>
         {[
           { l: "Total",       v: stats.total,      color: C.text,    bg: C.bgCard,  border: C.border },
-          { l: "New",         v: stats.new,        color: "#3b82f6",  bg: C.bg === "#060606" ? "#0a1020" : "#eff6ff", border: "#3b82f633" },
-          { l: "In Progress", v: stats.inProgress, color: "#f59e0b",  bg: C.bg === "#060606" ? "#1a1200" : "#fffbeb", border: "#f59e0b33" },
-          { l: "Resolved",    v: stats.resolved,   color: "#22c55e",  bg: C.bg === "#060606" ? "#0a1a0a" : "#f0fdf4", border: "#22c55e33" },
+          { l: "New",         v: stats.new,        color: "#3b82f6",  bg: C.bg === "#060606" ? "#0a1020" : "#f0f7ff", border: C.bg === "#060606" ? "#3b82f633" : "#bfdbfe" },
+          { l: "In Progress", v: stats.inProgress, color: "#f59e0b",  bg: C.bg === "#060606" ? "#1a1200" : "#fffbf0", border: C.bg === "#060606" ? "#f59e0b33" : "#fde68a" },
+          { l: "Resolved",    v: stats.resolved,   color: "#10b981",  bg: C.bg === "#060606" ? "#0a1a0a" : "#f0fdf4", border: C.bg === "#060606" ? "#10b98133" : "#a7f3d0" },
         ].map(s => (
           <div key={s.l} style={{ padding: "22px 24px", borderRadius: 10, background: s.bg, border: `1px solid ${s.border}` }}>
             <div style={{ fontSize: 32, fontWeight: 700, color: s.l === 'Total' ? C.text : s.color, letterSpacing: -1, lineHeight: 1 }}>{s.v}</div>
@@ -1172,7 +1177,7 @@ function AdminDashboard({ showToast }) {
 
       {/* Filters */}
       <div className="rx-filter-row" style={{ display: "flex", gap: 8, marginBottom: 14, flexWrap: "wrap", alignItems: "center" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8, background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 7, padding: "7px 13px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, background: C.bg === "#060606" ? C.bgCard : "#f9fafb", border: `1px solid ${C.border}`, borderRadius: 8, padding: "7px 13px" }}>
           <Ico name="search" size={14} color={C.textDim} />
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search complaints…"
             style={{ background: "none", border: "none", outline: "none", fontSize: 15, color: C.text, fontFamily: "inherit", width: 180 }} />
@@ -1195,7 +1200,7 @@ function AdminDashboard({ showToast }) {
         ) : (
           <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 16 }}>
             <thead>
-              <tr style={{ borderBottom: `1px solid ${C.border}`, background: C.bgCard }}>
+              <tr style={{ borderBottom: `1px solid ${C.border}`, background: C.bg === "#060606" ? C.bgCard : "#f9fafb" }}>
                 {["ID", "Submitted By", "Title", "Dept", "Priority", "Status", "Date", ""].map(h => (
                   <th key={h} style={{ padding: "12px 16px", textAlign: "left", fontSize: 14, fontWeight: 600, color: C.textSub, letterSpacing: 0.4, textTransform: "uppercase", whiteSpace: "nowrap" }}>{h}</th>
                 ))}
@@ -1212,7 +1217,7 @@ function AdminDashboard({ showToast }) {
                 return (
                   <tr key={c.id} style={{ borderBottom: i < filtered.length - 1 ? `1px solid ${C.border}` : "none", transition: "background 0.1s" }}
                     onMouseEnter={e => e.currentTarget.style.background = C.bgCardHover}
-                    onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
+                    onMouseLeave={e => e.currentTarget.style.background = C.bg === "#060606" ? "transparent" : C.bgCard}>
                     <td style={{ padding: "13px 16px", color: C.textDim, fontSize: 13, fontFamily: "monospace" }}>{String(c.id).slice(-6)}</td>
 
                     {/* ── Submitted By cell ── */}
@@ -1431,7 +1436,7 @@ function ProfilePage({ user, setUser, setPage, showToast }) {
   return (
     <main className="rx-page" style={{ maxWidth: 520, margin: "0 auto", padding: "48px 32px" }}>
       <h1 style={{ fontSize: 24, fontWeight: 700, color: C.text, margin: "0 0 28px", letterSpacing: -0.5 }}>Profile</h1>
-      <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 12, padding: 26 }}>
+      <div style={{ background: C.bgCard, border: `1px solid ${C.border}`, borderRadius: 14, padding: 28, boxShadow: C.bg === "#060606" ? "none" : "0 2px 16px rgba(0,0,0,0.07)" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 26, paddingBottom: 22, borderBottom: `1px solid ${C.border}` }}>
           <div style={{ width: 46, height: 46, borderRadius: 10, background: C.bgCardHover, border: `1px solid ${C.borderHover}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
             <span style={{ fontSize: 20, fontWeight: 700, color: C.logo }}>{user.name?.charAt(0).toUpperCase()}</span>
