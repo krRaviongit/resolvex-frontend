@@ -374,9 +374,9 @@ function HomePage({ setPage, setSelectedDept, user }) {
             <span style={{ fontSize: 13, color: C.textSub, letterSpacing: 1.2, textTransform: "uppercase", fontWeight: 600 }}>⚡ Now Live — Smart Complaint Management</span>
           </div>
           <h1 style={{ fontSize: "clamp(38px,5.5vw,68px)", fontWeight: 700, color: C.text, margin: "0 0 22px", letterSpacing: -3, lineHeight: 1.05, maxWidth: 740 }}>
-            Every complaint.<br />
-            <span style={{ color: C.logo }}>Resolved.</span>
-            <span style={{ color: C.textSub }}> On time.</span>
+            Resolve every issue.<br />
+            <span style={{ color: C.logo }}>Faster</span>
+            <span style={{ color: C.textSub }}> than ever.</span>
           </h1>
           <p style={{ fontSize: 19, color: C.textSub, maxWidth: 500, margin: "0 0 40px", lineHeight: 1.75, fontWeight: 400 }}>
             Submit complaints to the right department instantly. Track progress, get notified, and close issues fast.
