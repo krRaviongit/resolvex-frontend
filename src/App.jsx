@@ -402,8 +402,8 @@ function HomePage({ setPage, setSelectedDept, user }) {
         <section aria-label="Platform statistics" className="rx-stats" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 0, marginBottom: 140, border: `1px solid ${C.border}`, borderRadius: 14, overflow: "hidden", boxShadow: C.bg === "#060606" ? "none" : "0 2px 12px rgba(0,0,0,0.07)" }}>
           {[
             { v: "1,284",    l: "Complaints resolved", color: "#38bdf8" },
-            { v: "2.4 days", l: "Avg resolution time",  color: "#ff617e" },
-            { v: "8",        l: "Active departments",    color: "#c0ff2c" },
+            { v: "2.4 days", l: "Avg resolution time",  color: "#fb923c" },
+            { v: "8",        l: "Active departments",    color: "#c084fc" },
             { v: "94%",      l: "Satisfaction rate",     color: "#4ade80" },
           ].map((s, i) => (
             <div key={s.l} style={{ padding: "26px 28px", borderRight: i < 3 ? `1px solid ${C.border}` : "none", background: C.bgCard }}>
