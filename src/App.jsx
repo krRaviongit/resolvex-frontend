@@ -378,6 +378,9 @@ function HomePage({ setPage, setSelectedDept, user }) {
             <span style={{ color: C.logo }}>Resolved.</span>
             <span style={{ color: C.textSub }}> On time.</span>
           </h1>
+          <p style={{ fontSize: 19, color: C.textSub, maxWidth: 500, margin: "0 0 40px", lineHeight: 1.75, fontWeight: 400 }}>
+            Submit complaints to the right department instantly. Track progress, get notified, and close issues fast.
+          </p>
           {!user && (
             <div className="rx-hero-btns" style={{ display: "flex", gap: 12 }}>
               <Btn size="lg" variant="primary" onClick={() => setPage("register")} style={{ gap: 8 }}>
