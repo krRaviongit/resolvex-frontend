@@ -279,7 +279,7 @@ function Navbar({ page, setPage, user, onLogout, isDark, toggleTheme }) {
       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
 
         {/* Logo — only this navigates to home */}
-        <div style={{ display: "flex", alignItems: "center", gap: 0, cursor: "pointer", marginRight: 14 }} onClick={() => setPage("home")}>
+        <div style={{ display: "flex", alignItems: "center", gap: 7, cursor: "pointer", marginRight: 14 }} onClick={() => setPage("home")}>
           <img
             src="/logo.svg"
             alt="ResolveX"
@@ -374,12 +374,19 @@ function HomePage({ setPage, setSelectedDept, user }) {
             <span style={{ fontSize: 13, color: C.textSub, letterSpacing: 1.2, textTransform: "uppercase", fontWeight: 600 }}>⚡ Now Live — Smart Complaint Management</span>
           </div>
           <h1 style={{ fontSize: "clamp(38px,5.5vw,68px)", fontWeight: 700, color: C.text, margin: "0 0 22px", letterSpacing: -3, lineHeight: 1.05, maxWidth: 740 }}>
-            Resolve every issue.<br />
-            <span style={{ color: C.logo }}>Faster</span>
-            <span style={{ color: C.textSub }}> than ever.</span>
+            Every complaint.<br />
+            <span style={{ color: C.logo }}>Resolved.</span>
+            <span style={{ color: C.textSub }}> On time.</span>
           </h1>
-          <p style={{ fontSize: 19, color: C.textSub, maxWidth: 500, margin: "0 0 40px", lineHeight: 1.75, fontWeight: 400 }}>
-            Submit complaints to the right department instantly. Track progress, get notified, and close issues fast.
+          <p style={{ fontSize: 19, maxWidth: 560, margin: "0 0 40px", lineHeight: 1.9, fontWeight: 400 }}>
+            <span style={{ color: C.text, fontWeight: 600 }}>No more chasing people.</span>
+            <span style={{ color: C.textSub }}> Raise a complaint in 30 seconds — </span>
+            <span style={{ color: C.logo, fontWeight: 600 }}>the right team gets it instantly.</span>
+            <br />
+            <span style={{ color: C.textSub }}>Track every update, </span>
+            <span style={{ color: C.text, fontWeight: 600 }}>get notified by email,</span>
+            <span style={{ color: C.textSub }}> and close issues </span>
+            <span style={{ color: "#22c55e", fontWeight: 600 }}>faster than ever before.</span>
           </p>
           {!user && (
             <div className="rx-hero-btns" style={{ display: "flex", gap: 12 }}>
@@ -391,20 +398,125 @@ function HomePage({ setPage, setSelectedDept, user }) {
           )}
         </header>
 
-        {/* Stats */}
-        <section aria-label="Platform statistics" className="rx-stats" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 0, marginBottom: 140, border: `1px solid ${C.border}`, borderRadius: 14, overflow: "hidden", boxShadow: C.bg === "#060606" ? "none" : "0 2px 12px rgba(0,0,0,0.07)" }}>
-          {[
-            { v: "1,284",    l: "Complaints resolved", color: "#38bdf8" },
-            { v: "2.4 days", l: "Avg resolution time",  color: "#ff617e" },
-            { v: "8",        l: "Active departments",    color: "#659002" },
-            { v: "94%",      l: "Satisfaction rate",     color: "#4ade80" },
-          ].map((s, i) => (
-            <div key={s.l} style={{ padding: "26px 28px", borderRight: i < 3 ? `1px solid ${C.border}` : "none", background: C.bgCard }}>
-              <div style={{ fontSize: 32, fontWeight: 700, color: s.color, letterSpacing: -1.2, marginBottom: 5 }}>{s.v}</div>
-              <div style={{ fontSize: 15, color: C.textSub }}>{s.l}</div>
-            </div>
-          ))}
-        </section>
+        {/* Stats — premium card design */}
+        {(() => {
+          const isDark = C.bg === "#060606";
+          const stats = [
+            {
+              v: "1,284",
+              l: "Complaints resolved",
+              sub: "across all departments",
+              darkColor: "#38bdf8",
+              // Light: rich, saturated, professional
+              lightColor: "#0ea5e9",
+              lightBg: "linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)",
+              lightBorder: "#bae6fd",
+              lightIconBg: "#0ea5e9",
+              icon: (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                  <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+              ),
+            },
+            {
+              v: "2.4",
+              unit: "days",
+              l: "Avg resolution time",
+              sub: "from open to closed",
+              darkColor: "#fb923c",
+              lightColor: "#ea580c",
+              lightBg: "linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%)",
+              lightBorder: "#fed7aa",
+              lightIconBg: "#ea580c",
+              icon: (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+              ),
+            },
+            {
+              v: "8",
+              l: "Active departments",
+              sub: "ready to resolve issues",
+              darkColor: "#c084fc",
+              lightColor: "#7c3aed",
+              lightBg: "linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%)",
+              lightBorder: "#d8b4fe",
+              lightIconBg: "#7c3aed",
+              icon: (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                  <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+                </svg>
+              ),
+            },
+            {
+              v: "94",
+              unit: "%",
+              l: "Satisfaction rate",
+              sub: "based on user ratings",
+              darkColor: "#4ade80",
+              lightColor: "#059669",
+              lightBg: "linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)",
+              lightBorder: "#a7f3d0",
+              lightIconBg: "#059669",
+              icon: (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+              ),
+            },
+          ];
+
+          if (isDark) {
+            // Dark mode — keep original clean dark style
+            return (
+              <section aria-label="Platform statistics" className="rx-stats" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 0, marginBottom: 140, border: `1px solid ${C.border}`, borderRadius: 14, overflow: "hidden" }}>
+                {stats.map((s, i) => (
+                  <div key={s.l} style={{ padding: "26px 28px", borderRight: i < 3 ? `1px solid ${C.border}` : "none", background: C.bgCard }}>
+                    <div style={{ fontSize: 32, fontWeight: 700, color: s.darkColor, letterSpacing: -1.2, marginBottom: 5 }}>
+                      {s.v}{s.unit && <span style={{ fontSize: 20 }}>{s.unit}</span>}
+                    </div>
+                    <div style={{ fontSize: 15, color: C.textSub }}>{s.l}</div>
+                  </div>
+                ))}
+              </section>
+            );
+          }
+
+          // Light mode — premium individual cards inspired by Linear/Stripe
+          return (
+            <section aria-label="Platform statistics" className="rx-stats" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16, marginBottom: 100 }}>
+              {stats.map((s, i) => (
+                <div key={s.l}
+                  style={{ background: s.lightBg, border: `1px solid ${s.lightBorder}`, borderRadius: 18, padding: "24px 22px", position: "relative", overflow: "hidden", transition: "transform 0.2s, box-shadow 0.2s", cursor: "default" }}
+                  onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = `0 12px 32px ${s.lightBorder}88`; }}
+                  onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}>
+
+                  {/* Icon badge */}
+                  <div style={{ width: 36, height: 36, borderRadius: 10, background: s.lightIconBg, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16, color: "#fff" }}>
+                    {s.icon}
+                  </div>
+
+                  {/* Number */}
+                  <div style={{ fontSize: 36, fontWeight: 800, color: s.lightColor, letterSpacing: -1.5, lineHeight: 1, marginBottom: 6 }}>
+                    {s.v}
+                    {s.unit && <span style={{ fontSize: 22, fontWeight: 700 }}>{s.unit}</span>}
+                  </div>
+
+                  {/* Label */}
+                  <div style={{ fontSize: 14, fontWeight: 600, color: "#111", marginBottom: 3 }}>{s.l}</div>
+                  <div style={{ fontSize: 12, color: "#6b7280" }}>{s.sub}</div>
+
+                  {/* Decorative circle — top right */}
+                  <div style={{ position: "absolute", top: -20, right: -20, width: 90, height: 90, borderRadius: "50%", background: s.lightIconBg, opacity: 0.06 }} />
+                </div>
+              ))}
+            </section>
+          );
+        })()}
 
         {/* Departments */}
         <section aria-label="Departments">
