@@ -398,80 +398,41 @@ function HomePage({ setPage, setSelectedDept, user }) {
           )}
         </header>
 
-        {/* Stats — premium card design */}
+        {/* Stats — sophisticated minimal design */}
         {(() => {
           const isDark = C.bg === "#060606";
           const stats = [
             {
-              v: "1,284",
-              l: "Complaints resolved",
-              sub: "across all departments",
+              v: "1,284", l: "Complaints resolved",
+              trend: "+12% this month",
               darkColor: "#38bdf8",
-              // Light: rich, saturated, professional
-              lightColor: "#0ea5e9",
-              lightBg: "linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)",
-              lightBorder: "#bae6fd",
-              lightIconBg: "#0ea5e9",
-              icon: (
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                  <polyline points="22 4 12 14.01 9 11.01"/>
-                </svg>
-              ),
+              icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>,
+              iconColor: "#10b981",
             },
             {
-              v: "2.4",
-              unit: "days",
-              l: "Avg resolution time",
-              sub: "from open to closed",
+              v: "2.4", unit: "days", l: "Avg resolution time",
+              trend: "↓ 0.3 days faster",
               darkColor: "#fb923c",
-              lightColor: "#ea580c",
-              lightBg: "linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%)",
-              lightBorder: "#fed7aa",
-              lightIconBg: "#ea580c",
-              icon: (
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="10"/>
-                  <polyline points="12 6 12 12 16 14"/>
-                </svg>
-              ),
+              icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+              iconColor: "#f59e0b",
             },
             {
-              v: "8",
-              l: "Active departments",
-              sub: "ready to resolve issues",
+              v: "8", l: "Active departments",
+              trend: "All operational",
               darkColor: "#c084fc",
-              lightColor: "#7c3aed",
-              lightBg: "linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%)",
-              lightBorder: "#d8b4fe",
-              lightIconBg: "#7c3aed",
-              icon: (
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-                  <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
-                </svg>
-              ),
+              icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>,
+              iconColor: "#6366f1",
             },
             {
-              v: "94",
-              unit: "%",
-              l: "Satisfaction rate",
-              sub: "based on user ratings",
+              v: "94", unit: "%", l: "Satisfaction rate",
+              trend: "Based on ratings",
               darkColor: "#4ade80",
-              lightColor: "#059669",
-              lightBg: "linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)",
-              lightBorder: "#a7f3d0",
-              lightIconBg: "#059669",
-              icon: (
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                </svg>
-              ),
+              icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>,
+              iconColor: "#10b981",
             },
           ];
 
           if (isDark) {
-            // Dark mode — keep original clean dark style
             return (
               <section aria-label="Platform statistics" className="rx-stats" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 0, marginBottom: 140, border: `1px solid ${C.border}`, borderRadius: 14, overflow: "hidden" }}>
                 {stats.map((s, i) => (
@@ -486,32 +447,39 @@ function HomePage({ setPage, setSelectedDept, user }) {
             );
           }
 
-          // Light mode — premium individual cards inspired by Linear/Stripe
+          // Light mode — Stripe/Linear inspired sophisticated cards
           return (
-            <section aria-label="Platform statistics" className="rx-stats" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16, marginBottom: 100 }}>
+            <section aria-label="Platform statistics" className="rx-stats" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 14, marginBottom: 100 }}>
               {stats.map((s, i) => (
                 <div key={s.l}
-                  style={{ background: s.lightBg, border: `1px solid ${s.lightBorder}`, borderRadius: 18, padding: "24px 22px", position: "relative", overflow: "hidden", transition: "transform 0.2s, box-shadow 0.2s", cursor: "default" }}
-                  onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = `0 12px 32px ${s.lightBorder}88`; }}
-                  onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}>
+                  style={{ background: "#ffffff", border: "1px solid #ebebeb", borderRadius: 16, padding: "22px 24px", position: "relative", overflow: "hidden", transition: "all 0.2s ease", cursor: "default", boxShadow: "0 1px 3px rgba(0,0,0,0.04)" }}
+                  onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.08)"; e.currentTarget.style.borderColor = "#d4d4d4"; }}
+                  onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 1px 3px rgba(0,0,0,0.04)"; e.currentTarget.style.borderColor = "#ebebeb"; }}>
 
-                  {/* Icon badge */}
-                  <div style={{ width: 36, height: 36, borderRadius: 10, background: s.lightIconBg, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16, color: "#fff" }}>
-                    {s.icon}
+                  {/* Top row — label + icon */}
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+                    <span style={{ fontSize: 13, fontWeight: 500, color: "#6b7280", letterSpacing: 0.1 }}>{s.l}</span>
+                    <div style={{ width: 28, height: 28, borderRadius: 8, background: `${s.iconColor}15`, display: "flex", alignItems: "center", justifyContent: "center", color: s.iconColor }}>
+                      {s.icon}
+                    </div>
                   </div>
 
-                  {/* Number */}
-                  <div style={{ fontSize: 36, fontWeight: 800, color: s.lightColor, letterSpacing: -1.5, lineHeight: 1, marginBottom: 6 }}>
+                  {/* Big number */}
+                  <div style={{ fontSize: 38, fontWeight: 800, color: "#0f172a", letterSpacing: -2, lineHeight: 1, marginBottom: 12 }}>
                     {s.v}
-                    {s.unit && <span style={{ fontSize: 22, fontWeight: 700 }}>{s.unit}</span>}
+                    {s.unit && <span style={{ fontSize: 22, fontWeight: 700, letterSpacing: -1 }}>{s.unit}</span>}
                   </div>
 
-                  {/* Label */}
-                  <div style={{ fontSize: 14, fontWeight: 600, color: "#111", marginBottom: 3 }}>{s.l}</div>
-                  <div style={{ fontSize: 12, color: "#6b7280" }}>{s.sub}</div>
+                  {/* Divider */}
+                  <div style={{ height: 1, background: "#f3f4f6", marginBottom: 12 }} />
 
-                  {/* Decorative circle — top right */}
-                  <div style={{ position: "absolute", top: -20, right: -20, width: 90, height: 90, borderRadius: "50%", background: s.lightIconBg, opacity: 0.06 }} />
+                  {/* Trend */}
+                  <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                    <span style={{ fontSize: 12, color: s.iconColor, fontWeight: 600 }}>{s.trend}</span>
+                  </div>
+
+                  {/* Subtle left accent bar */}
+                  <div style={{ position: "absolute", left: 0, top: "20%", bottom: "20%", width: 3, background: s.iconColor, borderRadius: "0 2px 2px 0", opacity: 0.7 }} />
                 </div>
               ))}
             </section>
