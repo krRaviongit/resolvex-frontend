@@ -403,7 +403,7 @@ function HomePage({ setPage, setSelectedDept, user }) {
               iconColor: "#10b981",
             },
             {
-              v: "2.4", unit: "days", l: "Avg resolution time",
+              v: "2.4", unit: " days", l: "Avg resolution time",
               trend: "↓ 0.3 days faster",
               darkColor: "#fb923c",
               icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
