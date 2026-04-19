@@ -414,7 +414,7 @@ function HomePage({ setPage, setSelectedDept, user }) {
               trend: "↓ 0.3 days faster",
               darkColor: "#ff617e",
               icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
-              iconColor: "#f59e0b",
+              iconColor: "#d23551",
             },
             {
               v: "8", l: "Active departments",
