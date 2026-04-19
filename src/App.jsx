@@ -279,7 +279,7 @@ function Navbar({ page, setPage, user, onLogout, isDark, toggleTheme }) {
       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
 
         {/* Logo — only this navigates to home */}
-        <div style={{ display: "flex", alignItems: "center", gap: 0, cursor: "pointer", marginRight: 14 }} onClick={() => setPage("home")}>
+        <div style={{ display: "flex", alignItems: "center", gap: 7, cursor: "pointer", marginRight: 14 }} onClick={() => setPage("home")}>
           <img
             src="/logo.svg"
             alt="ResolveX"
@@ -374,12 +374,19 @@ function HomePage({ setPage, setSelectedDept, user }) {
             <span style={{ fontSize: 13, color: C.textSub, letterSpacing: 1.2, textTransform: "uppercase", fontWeight: 600 }}>⚡ Now Live — Smart Complaint Management</span>
           </div>
           <h1 style={{ fontSize: "clamp(38px,5.5vw,68px)", fontWeight: 700, color: C.text, margin: "0 0 22px", letterSpacing: -3, lineHeight: 1.05, maxWidth: 740 }}>
-            Resolve your Issues.<br />
-            <span style={{ color: C.logo }}>Faster.</span>
-            <span style={{ color: C.textSub }}> than ever.</span>
+            Every complaint.<br />
+            <span style={{ color: C.logo }}>Resolved.</span>
+            <span style={{ color: C.textSub }}> On time.</span>
           </h1>
-          <p style={{ fontSize: 19,  color: C.textSub, maxWidth: 560, margin: "0 0 40px", lineHeight: 1.9, fontWeight: 400 }}>
-            Submit complaints to the right department instantly. Track progress and stay informed every step of the way.
+          <p style={{ fontSize: 19, maxWidth: 560, margin: "0 0 40px", lineHeight: 1.9, fontWeight: 400 }}>
+            <span style={{ color: C.text, fontWeight: 600 }}>No more chasing people.</span>
+            <span style={{ color: C.textSub }}> Raise a complaint in 30 seconds — </span>
+            <span style={{ color: C.logo, fontWeight: 600 }}>the right team gets it instantly.</span>
+            <br />
+            <span style={{ color: C.textSub }}>Track every update, </span>
+            <span style={{ color: C.text, fontWeight: 600 }}>get notified by email,</span>
+            <span style={{ color: C.textSub }}> and close issues </span>
+            <span style={{ color: "#22c55e", fontWeight: 600 }}>faster than ever before.</span>
           </p>
           {!user && (
             <div className="rx-hero-btns" style={{ display: "flex", gap: 12 }}>
@@ -403,7 +410,7 @@ function HomePage({ setPage, setSelectedDept, user }) {
               iconColor: "#10b981",
             },
             {
-              v: "2.4", unit: " days", l: "Avg resolution time",
+              v: "2.4", unit: "days", l: "Avg resolution time",
               trend: "↓ 0.3 days faster",
               darkColor: "#fb923c",
               icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
@@ -427,13 +434,34 @@ function HomePage({ setPage, setSelectedDept, user }) {
 
           if (isDark) {
             return (
-              <section aria-label="Platform statistics" className="rx-stats" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 0, marginBottom: 140, border: `1px solid ${C.border}`, borderRadius: 14, overflow: "hidden" }}>
+              <section aria-label="Platform statistics" className="rx-stats" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 14, marginBottom: 140 }}>
                 {stats.map((s, i) => (
-                  <div key={s.l} style={{ padding: "26px 28px", borderRight: i < 3 ? `1px solid ${C.border}` : "none", background: C.bgCard }}>
-                    <div style={{ fontSize: 32, fontWeight: 700, color: s.darkColor, letterSpacing: -1.2, marginBottom: 5 }}>
-                      {s.v}{s.unit && <span style={{ fontSize: 20 }}>{s.unit}</span>}
+                  <div key={s.l}
+                    style={{ background: "#111", border: `1px solid #222`, borderRadius: 16, padding: "22px 24px", position: "relative", overflow: "hidden", transition: "all 0.2s ease", cursor: "default", boxShadow: "0 1px 4px rgba(0,0,0,0.3)" }}
+                    onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = `0 8px 28px rgba(0,0,0,0.5)`; e.currentTarget.style.borderColor = "#333"; }}
+                    onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,0.3)"; e.currentTarget.style.borderColor = "#222"; }}>
+
+                    {/* Top row — label + icon */}
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+                      <span style={{ fontSize: 13, fontWeight: 500, color: "#666", letterSpacing: 0.1 }}>{s.l}</span>
+                      <div style={{ width: 28, height: 28, borderRadius: 8, background: `${s.darkColor}18`, display: "flex", alignItems: "center", justifyContent: "center", color: s.darkColor }}>
+                        {s.icon}
+                      </div>
                     </div>
-                    <div style={{ fontSize: 15, color: C.textSub }}>{s.l}</div>
+
+                    {/* Big number */}
+                    <div style={{ fontSize: 38, fontWeight: 800, color: s.darkColor, letterSpacing: -2, lineHeight: 1, marginBottom: 12 }}>
+                      {s.v}{s.unit && <span style={{ fontSize: 22, fontWeight: 700, letterSpacing: -1 }}>{s.unit}</span>}
+                    </div>
+
+                    {/* Divider */}
+                    <div style={{ height: 1, background: "#1e1e1e", marginBottom: 12 }} />
+
+                    {/* Trend */}
+                    <div style={{ fontSize: 12, color: s.darkColor, fontWeight: 600 }}>{s.trend}</div>
+
+                    {/* Left accent bar */}
+                    <div style={{ position: "absolute", left: 0, top: "20%", bottom: "20%", width: 3, background: s.darkColor, borderRadius: "0 2px 2px 0", opacity: 0.7 }} />
                   </div>
                 ))}
               </section>
