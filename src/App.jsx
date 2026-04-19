@@ -279,7 +279,7 @@ function Navbar({ page, setPage, user, onLogout, isDark, toggleTheme }) {
       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
 
         {/* Logo — only this navigates to home */}
-        <div style={{ display: "flex", alignItems: "center", gap: 0, cursor: "pointer", marginRight: 14 }} onClick={() => setPage("home")}>
+        <div style={{ display: "flex", alignItems: "center", gap: 7, cursor: "pointer", marginRight: 14 }} onClick={() => setPage("home")}>
           <img
             src="/logo.svg"
             alt="ResolveX"
@@ -374,12 +374,19 @@ function HomePage({ setPage, setSelectedDept, user }) {
             <span style={{ fontSize: 13, color: C.textSub, letterSpacing: 1.2, textTransform: "uppercase", fontWeight: 600 }}>⚡ Now Live — Smart Complaint Management</span>
           </div>
           <h1 style={{ fontSize: "clamp(38px,5.5vw,68px)", fontWeight: 700, color: C.text, margin: "0 0 22px", letterSpacing: -3, lineHeight: 1.05, maxWidth: 740 }}>
-            Resolve your Issues<br />
-            <span style={{ color: C.logo }}>Faster.</span>
-            <span style={{ color: C.textSub }}> than ever.</span>
+            Every complaint.<br />
+            <span style={{ color: C.logo }}>Resolved.</span>
+            <span style={{ color: C.textSub }}> On time.</span>
           </h1>
-          <p style={{ fontSize: 19, color: C.textSub, maxWidth: 560, margin: "0 0 40px", lineHeight: 1.9, fontWeight: 400 }}>
-            Submit complaints to the right department instantly. Track progress and stay informed every step of the way.
+          <p style={{ fontSize: 19, maxWidth: 560, margin: "0 0 40px", lineHeight: 1.9, fontWeight: 400 }}>
+            <span style={{ color: C.text, fontWeight: 600 }}>No more chasing people.</span>
+            <span style={{ color: C.textSub }}> Raise a complaint in 30 seconds — </span>
+            <span style={{ color: C.logo, fontWeight: 600 }}>the right team gets it instantly.</span>
+            <br />
+            <span style={{ color: C.textSub }}>Track every update, </span>
+            <span style={{ color: C.text, fontWeight: 600 }}>get notified by email,</span>
+            <span style={{ color: C.textSub }}> and close issues </span>
+            <span style={{ color: "#22c55e", fontWeight: 600 }}>faster than ever before.</span>
           </p>
           {!user && (
             <div className="rx-hero-btns" style={{ display: "flex", gap: 12 }}>
@@ -479,54 +486,173 @@ function HomePage({ setPage, setSelectedDept, user }) {
           );
         })()}
 
-        {/* Departments */}
-        <section aria-label="Departments">
-          <h2 style={{ fontSize: 14, fontWeight: 600, color: C.textSub, letterSpacing: 1.2, textTransform: "uppercase", margin: "0 0 18px" }}>Departments</h2>
-          <div className="rx-dept" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(220px,1fr))", gap: 0, border: `1px solid ${C.border}`, borderRadius: 14, overflow: "hidden", boxShadow: C.bg === "#060606" ? "none" : "0 2px 12px rgba(0,0,0,0.07)" }}>
-            {DEPARTMENTS.map((dept, i) => {
-              const dColor = DEPT_COLORS[dept.id];
-              return (
-                <div key={dept.id} onClick={() => { setSelectedDept(dept.id); setPage(user ? "submit" : "login"); }}
-                  style={{ padding: "24px 22px", background: C.bgCard, cursor: "pointer", transition: "all 0.22s cubic-bezier(0.4,0,0.2,1)", borderRight: i % 4 !== 3 ? `1px solid ${C.border}` : "none", borderBottom: i < 4 ? `1px solid ${C.border}` : "none", display: "flex", flexDirection: "column", gap: 16, position: "relative", overflow: "hidden" }}
-                  onMouseEnter={e => {
-                    e.currentTarget.style.background = C.bg === "#060606" ? "#161616" : `${dColor}08`;
-                    e.currentTarget.style.transform = "translateY(-2px)";
-                    e.currentTarget.style.boxShadow = C.bg === "#060606" ? `0 8px 24px rgba(0,0,0,0.4)` : `0 8px 24px ${dColor}22`;
-                    e.currentTarget.querySelector(".dept-icon-wrap").style.background = `${dColor}25`;
-                    e.currentTarget.querySelector(".dept-icon-wrap").style.borderColor = `${dColor}55`;
-                    e.currentTarget.querySelector(".dept-arrow").style.opacity = "1";
-                    e.currentTarget.querySelector(".dept-arrow").style.transform = "translateX(4px)";
-                    e.currentTarget.querySelector(".dept-label").style.color = dColor;
-                  }}
-                  onMouseLeave={e => {
-                    e.currentTarget.style.background = C.bgCard;
-                    e.currentTarget.style.transform = "translateY(0)";
-                    e.currentTarget.style.boxShadow = "none";
-                    e.currentTarget.querySelector(".dept-icon-wrap").style.background = `${dColor}14`;
-                    e.currentTarget.querySelector(".dept-icon-wrap").style.borderColor = `${dColor}25`;
-                    e.currentTarget.querySelector(".dept-arrow").style.opacity = "0.4";
-                    e.currentTarget.querySelector(".dept-arrow").style.transform = "translateX(0)";
-                    e.currentTarget.querySelector(".dept-label").style.color = C.text;
-                  }}>
-                  {/* Subtle color glow bar at top */}
-                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${dColor}66, ${dColor}22)`, borderRadius: "0 0 0 0", opacity: 0.6 }} />
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                    <div className="dept-icon-wrap" style={{ width: 42, height: 42, borderRadius: 10, background: `${dColor}14`, border: `1px solid ${dColor}25`, display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.2s" }}>
-                      <Ico name={dept.icon} size={20} color={dColor} sw={1.8} />
+        {/* Departments — Fan Carousel Interactive Design */}
+        {(() => {
+          const [activeIdx, setActiveIdx] = useState(0);
+          const isDark = C.bg === "#060606";
+
+          // BG colors for each dept card in the fan
+          const cardBgs = [
+            "linear-gradient(145deg,#1e3a5f,#0f2744)",  // IT — deep blue
+            "linear-gradient(145deg,#3d2000,#6b3700)",  // Electrical — deep amber
+            "linear-gradient(145deg,#003a4f,#005f7a)",  // Plumbing — teal
+            "linear-gradient(145deg,#1a3300,#2d5200)",  // Maintenance — forest green
+            "linear-gradient(145deg,#3d0033,#660055)",  // Cleaning — magenta
+            "linear-gradient(145deg,#1a0050,#2e0085)",  // Network — indigo
+            "linear-gradient(145deg,#3d1500,#6b2500)",  // Security — burnt orange
+            "linear-gradient(145deg,#3d0005,#660009)",  // Mess — crimson
+          ];
+
+          const lightCardBgs = [
+            "linear-gradient(145deg,#dbeafe,#bfdbfe)",
+            "linear-gradient(145deg,#fef3c7,#fde68a)",
+            "linear-gradient(145deg,#cffafe,#a5f3fc)",
+            "linear-gradient(145deg,#dcfce7,#a7f3d0)",
+            "linear-gradient(145deg,#fce7f3,#fbcfe8)",
+            "linear-gradient(145deg,#ede9fe,#ddd6fe)",
+            "linear-gradient(145deg,#ffedd5,#fed7aa)",
+            "linear-gradient(145deg,#fee2e2,#fecaca)",
+          ];
+
+          const lightCardText = [
+            "#1e40af","#92400e","#0e7490","#166534","#9d174d","#5b21b6","#9a3412","#991b1b",
+          ];
+
+          const n = DEPARTMENTS.length;
+
+          // Fan layout positions for 8 cards
+          const getStyle = (i, active) => {
+            const offset = i - active;
+            const wrapped = ((offset + n) % n > n / 2) ? offset - n : offset;
+            const absOff = Math.abs(wrapped);
+            const side = wrapped < 0 ? -1 : wrapped > 0 ? 1 : 0;
+
+            if (wrapped === 0) {
+              // Center — fully visible, large
+              return {
+                transform: "translateX(-50%) translateY(0) scale(1) rotateY(0deg)",
+                left: "50%", zIndex: 10, opacity: 1, filter: "none",
+              };
+            }
+            if (absOff === 1) {
+              return {
+                transform: `translateX(-50%) translateX(${side * 220}px) translateY(30px) scale(0.82) rotateY(${side * -18}deg)`,
+                left: "50%", zIndex: 8, opacity: 0.85, filter: "brightness(0.75)",
+              };
+            }
+            if (absOff === 2) {
+              return {
+                transform: `translateX(-50%) translateX(${side * 360}px) translateY(70px) scale(0.66) rotateY(${side * -32}deg)`,
+                left: "50%", zIndex: 6, opacity: 0.65, filter: "brightness(0.55)",
+              };
+            }
+            // Hidden
+            return {
+              transform: `translateX(-50%) translateX(${side * 460}px) translateY(110px) scale(0.52) rotateY(${side * -45}deg)`,
+              left: "50%", zIndex: 4, opacity: 0, filter: "brightness(0.3)",
+              pointerEvents: "none",
+            };
+          };
+
+          const active = DEPARTMENTS[activeIdx];
+          const dColor = DEPT_COLORS[active.id];
+          const cardBg = isDark ? cardBgs[activeIdx] : lightCardBgs[activeIdx];
+          const textCol = isDark ? "#fff" : lightCardText[activeIdx];
+
+          return (
+            <section aria-label="Departments" style={{ marginBottom: 0 }}>
+              <h2 style={{ fontSize: 13, fontWeight: 600, color: C.textSub, letterSpacing: 1.5, textTransform: "uppercase", margin: "0 0 48px", textAlign: "center" }}>Choose a Department</h2>
+
+              {/* Fan stage */}
+              <div style={{ position: "relative", height: 340, perspective: "1200px", marginBottom: 32 }}
+                onKeyDown={e => {
+                  if (e.key === "ArrowLeft") setActiveIdx(p => (p - 1 + n) % n);
+                  if (e.key === "ArrowRight") setActiveIdx(p => (p + 1) % n);
+                }} tabIndex={0}>
+
+                {DEPARTMENTS.map((dept, i) => {
+                  const s = getStyle(i, activeIdx);
+                  const bg = isDark ? cardBgs[i] : lightCardBgs[i];
+                  const tc = isDark ? "#fff" : lightCardText[i];
+                  const dc = DEPT_COLORS[dept.id];
+                  return (
+                    <div key={dept.id}
+                      onClick={() => {
+                        if (i === activeIdx) { setSelectedDept(dept.id); setPage(user ? "submit" : "login"); }
+                        else setActiveIdx(i);
+                      }}
+                      style={{
+                        position: "absolute", top: 0, width: 240, height: 300,
+                        borderRadius: 24, cursor: "pointer",
+                        background: bg,
+                        boxShadow: i === activeIdx
+                          ? isDark ? "0 32px 80px rgba(0,0,0,0.7)" : "0 24px 60px rgba(0,0,0,0.18)"
+                          : "0 8px 24px rgba(0,0,0,0.15)",
+                        transition: "all 0.45s cubic-bezier(0.4,0,0.2,1)",
+                        transformStyle: "preserve-3d",
+                        border: i === activeIdx ? `1px solid ${dc}55` : "1px solid transparent",
+                        overflow: "hidden",
+                        ...s,
+                      }}>
+
+                      {/* Card inner glow */}
+                      {i === activeIdx && (
+                        <div style={{ position: "absolute", inset: 0, background: `radial-gradient(circle at 30% 20%, ${dc}22 0%, transparent 60%)`, borderRadius: 24 }} />
+                      )}
+
+                      {/* Content */}
+                      <div style={{ position: "absolute", inset: 0, padding: 28, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                        {/* Top */}
+                        <div>
+                          <div style={{ width: 52, height: 52, borderRadius: 14, background: `${dc}25`, border: `1px solid ${dc}44`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
+                            <Ico name={dept.icon} size={24} color={dc} sw={1.8} />
+                          </div>
+                          <div style={{ fontSize: 20, fontWeight: 800, color: tc, marginBottom: 8, lineHeight: 1.2 }}>{dept.label}</div>
+                          <div style={{ fontSize: 13, color: isDark ? "rgba(255,255,255,0.6)" : `${tc}99`, lineHeight: 1.6 }}>{dept.desc}</div>
+                        </div>
+
+                        {/* Bottom CTA — only on active */}
+                        {i === activeIdx && (
+                          <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 16px", background: isDark ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.08)", borderRadius: 10, backdropFilter: "blur(8px)", width: "fit-content" }}>
+                            <span style={{ fontSize: 13, fontWeight: 600, color: tc }}>Submit complaint</span>
+                            <Ico name="arrowRight" size={14} color={tc} sw={2.5} />
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    <div className="dept-arrow" style={{ opacity: 0.4, transition: "all 0.2s" }}>
-                      <Ico name="arrowRight" size={16} color={dColor} sw={2} />
-                    </div>
-                  </div>
-                  <div>
-                    <div className="dept-label" style={{ fontSize: 16, fontWeight: 700, color: C.text, marginBottom: 5, transition: "color 0.2s" }}>{dept.label}</div>
-                    <div style={{ fontSize: 13, color: C.textSub, lineHeight: 1.55 }}>{dept.desc}</div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </section>
+                  );
+                })}
+              </div>
+
+              {/* Dot navigation */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 24 }}>
+                {DEPARTMENTS.map((_, i) => (
+                  <button key={i} onClick={() => setActiveIdx(i)}
+                    style={{ width: i === activeIdx ? 24 : 7, height: 7, borderRadius: 99, border: "none", cursor: "pointer", transition: "all 0.3s", background: i === activeIdx ? dColor : C.border, padding: 0 }} />
+                ))}
+              </div>
+
+              {/* Arrow controls */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12 }}>
+                <button onClick={() => setActiveIdx(p => (p - 1 + n) % n)}
+                  style={{ width: 42, height: 42, borderRadius: "50%", border: `1px solid ${C.border}`, background: C.bgCard, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.2s", color: C.textSub }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = dColor; e.currentTarget.style.background = `${dColor}15`; }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.background = C.bgCard; }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+                <span style={{ fontSize: 13, color: C.textDim, minWidth: 60, textAlign: "center" }}>
+                  {activeIdx + 1} / {n}
+                </span>
+                <button onClick={() => setActiveIdx(p => (p + 1) % n)}
+                  style={{ width: 42, height: 42, borderRadius: "50%", border: `1px solid ${C.border}`, background: C.bgCard, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.2s", color: C.textSub }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = dColor; e.currentTarget.style.background = `${dColor}15`; }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.background = C.bgCard; }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+              </div>
+            </section>
+          );
+        })()}
       </main>
     </>
   );
