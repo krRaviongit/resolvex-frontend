@@ -378,15 +378,8 @@ function HomePage({ setPage, setSelectedDept, user }) {
             <span style={{ color: C.logo }}>Faster.</span>
             <span style={{ color: C.textSub }}> than ever.</span>
           </h1>
-          <p style={{ fontSize: 19, maxWidth: 560, margin: "0 0 40px", lineHeight: 1.9, fontWeight: 400 }}>
-            <span style={{ color: C.text, fontWeight: 600 }}>No more chasing people.</span>
-            <span style={{ color: C.textSub }}> Raise a complaint in 30 seconds — </span>
-            <span style={{ color: C.logo, fontWeight: 600 }}>the right team gets it instantly.</span>
-            <br />
-            <span style={{ color: C.textSub }}>Track every update, </span>
-            <span style={{ color: C.text, fontWeight: 600 }}>get notified by email,</span>
-            <span style={{ color: C.textSub }}> and close issues </span>
-            <span style={{ color: "#22c55e", fontWeight: 600 }}>faster than ever before.</span>
+          <p style={{ fontSize: 19,  color: C.textSub, maxWidth: 560, margin: "0 0 40px", lineHeight: 1.9, fontWeight: 400 }}>
+            Submit complaints to the right department instantly. Track progress and stay informed every step of the way.
           </p>
           {!user && (
             <div className="rx-hero-btns" style={{ display: "flex", gap: 12 }}>
