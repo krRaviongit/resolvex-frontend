@@ -396,14 +396,14 @@ function HomePage({ setPage, setSelectedDept, user }) {
           const isDark = C.bg === "#0f1117";
           const stats = [
             {
-              v: "1,284", l: "Complaints resolved",
+              v: "1,000 +", l: "Complaints resolved",
               trend: "+12% this month",
               darkColor: "#38bdf8",
               icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>,
               iconColor: "#1188bc",
             },
             {
-              v: "2.4", unit: "days", l: "Avg resolution time",
+              v: "2.4", unit: " days", l: "Avg resolution time",
               trend: "↓ 0.3 days faster",
               darkColor: "#ff617e",
               icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
